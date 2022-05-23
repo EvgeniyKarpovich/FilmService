@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FilmRepository extends JpaRepository<FilmModel, Long>/*, JpaSpecificationExecutor<Film> */{
+public interface FilmRepository extends JpaRepository<FilmModel, Long>, JpaSpecificationExecutor<FilmModel> {
 
     List<FilmModel> findByNameStartsWithIgnoreCase(String name);
 
@@ -27,5 +27,6 @@ public interface FilmRepository extends JpaRepository<FilmModel, Long>/*, JpaSpe
 
     List<FilmModel> findByGenreAndHavingAnOskar(GenreForFilm genre, Boolean havingOskar);
 
-    Optional<FilmModel> findByNameAndDirectorId(String name, Integer id);
+    Optional<FilmModel> findByNameAndDirectorId(String name, Long id);
+
 }

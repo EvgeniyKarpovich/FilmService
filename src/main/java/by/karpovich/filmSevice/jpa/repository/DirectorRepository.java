@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DirectorRepository extends JpaRepository<DirectorModel, Long>/*, JpaSpecificationExecutor<Director>*/ {
+public interface DirectorRepository extends JpaRepository<DirectorModel, Long> {
 
     List<DirectorModel> findByNameStartsWithIgnoreCase(String name);
 

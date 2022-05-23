@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MusicRepository extends JpaRepository<MusicModel, Long>/*, JpaSpecificationExecutor<Music>*/ {
+public interface MusicRepository extends JpaRepository<MusicModel, Long> {
 
     Optional<MusicModel> findByNameIgnoreCase(String name);
 
