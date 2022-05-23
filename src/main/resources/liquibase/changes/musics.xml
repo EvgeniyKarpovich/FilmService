@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="musics-1" author="karpovich.e">
+        <sql>
+            CREATE TABLE MUSICS(
+            id serial PRIMARY KEY,
+            name varchar(30) NOT NULL,
+            author varchar(50) NOT NULL,
+            duration_In_Minutes integer NOT NULL,
+            genre varchar(130) NOT NULL,
+            date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            CONSTRAINT ct_music UNIQUE(name, author)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

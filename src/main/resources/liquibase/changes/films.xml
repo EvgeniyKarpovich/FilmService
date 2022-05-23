@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="films-1" author="karpovich.e">
+        <sql>
+            CREATE TABLE FILMS(
+            id serial PRIMARY KEY,
+            name varchar(50) NOT NULL,
+            genre varchar(130) NOT NULL,
+            director_id integer NOT NULL,
+            duration_in_minutes integer NOT NULL,
+            description varchar(30) NOT NULL,
+            release_date timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            rating_IMDB double NOT NULL,
+            age_Limit integer NOT NULL,
+            country_id integer NOT NULL,
+            date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE,
+            CONSTRAINT ct_film UNIQUE(name, director_id),
+            CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES COUNTRIES(id),
+            CONSTRAINT fk_director FOREIGN KEY (director_id) REFERENCES DIRECTORS(id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
