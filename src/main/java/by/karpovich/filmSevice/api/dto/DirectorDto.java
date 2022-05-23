@@ -1,7 +1,6 @@
 package by.karpovich.filmSevice.api.dto;
 
-import by.karpovich.filmSevice.jpa.model.CountryModel;
-import by.karpovich.filmSevice.jpa.model.FilmModel;
+import by.karpovich.filmSevice.api.validation.ValidCountry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -33,17 +32,17 @@ public class DirectorDto {
     @NotBlank(message = "Enter Surname")
     private String lastName;
 
-    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", required = true, position = 4)
+    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 4)
     @NotNull(message = "Enter Date")
     private Instant dateOfBirth;
 
     @ApiModelProperty(value = "country Id", example = "1", required = true, position = 5)
     @NotNull(message = "Enter Country")
-//    @ValidCountry
-    private CountryModel placeOfBirth;
+    @ValidCountry
+    private Long countryId;
 
-    @ApiModelProperty(value = "Films", dataType = "List", example = "", required = true, position = 8)
-    private List<FilmModel> films = new ArrayList<>();
+    @ApiModelProperty(value = "Films", dataType = "List", example = "", position = 8)
+    private List<Long> films = new ArrayList<>();
 
     //    private byte[] image;
 }

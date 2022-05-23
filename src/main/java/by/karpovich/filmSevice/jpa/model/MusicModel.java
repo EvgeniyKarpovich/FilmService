@@ -37,7 +37,7 @@ public class MusicModel {
 
     @Column(name = "genre", nullable = false)
     @Enumerated(EnumType.STRING)
-    private GenreMusic genreMusic;
+    private GenreMusic genre;
 
     @ManyToMany(mappedBy = "musics")
     private List<FilmModel> films = new ArrayList<>();

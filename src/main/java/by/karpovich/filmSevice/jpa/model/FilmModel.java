@@ -37,7 +37,7 @@ public class FilmModel {
 
     @ManyToOne
     @JoinColumn(name = "director_id", nullable = false)
-    private DirectorModel director;
+    private DirectorModel directorId;
 
     @Column(name = "duration_in_minutes", nullable = false)
     private int durationInMinutes;
@@ -53,7 +53,7 @@ public class FilmModel {
     @JoinTable(name = "ACTORS_FILMS",
             joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "actor_id", referencedColumnName = "id")})
-    private Set<ActorModel> actors = new HashSet<>();
+    private List<ActorModel> actors = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "MUSICS_FILMS",
@@ -61,12 +61,12 @@ public class FilmModel {
             inverseJoinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "id")})
     private List<MusicModel> musics = new ArrayList<>();
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
 //    private byte[] image;
 
-    @Column(name = "age_Limit", nullable = false)
+    @Column(name = "age_Limit")
     private int ageLimit;
 
     @CreatedDate

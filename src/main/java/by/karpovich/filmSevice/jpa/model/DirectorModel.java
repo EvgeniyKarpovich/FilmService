@@ -32,7 +32,7 @@ public class DirectorModel {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     private Instant dateOfBirth;
 
     //    private byte[] image;

@@ -35,14 +35,14 @@ public class ActorModel {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     private Instant dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private CountryModel placeOfBirth;
 
-    @Column(name = "height", nullable = false)
+    @Column(name = "height")
     private Integer height;
 
 //    private byte[] image;
