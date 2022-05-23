@@ -46,8 +46,8 @@ public class ActorDto {
     private Long countryId;
 
     @ApiModelProperty(value = "Height", example = "187", position = 6)
-    @NotNull(message = "Enter Height")
-    @Min(value = 1, message = "growth must be positive")
+    @NotNull(message = "Enter height")
+    @Min(value = 1, message = "height must be positive")
     private Integer height;
 
     @ApiModelProperty(value = "Awards", dataType = "Set", example = "", position = 7)
