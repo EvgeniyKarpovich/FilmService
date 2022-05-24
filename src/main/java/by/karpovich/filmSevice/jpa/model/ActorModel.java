@@ -51,7 +51,7 @@ public class ActorModel {
     @Convert(converter = RewardForActorConverter.class)
     private Set<RewardForActor> awards = new HashSet<>();
 
-    @ManyToMany(mappedBy = "actors", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "actors")
     private List<FilmModel> films = new ArrayList<>();
 
     @CreatedDate

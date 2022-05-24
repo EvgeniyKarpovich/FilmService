@@ -17,7 +17,7 @@
             awards varchar(130),
             date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE,
-            CONSTRAINT ct_actor UNIQUE(name, surname),
+            CONSTRAINT ct_actor UNIQUE(name, lastName),
             CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES COUNTRIES(id)
             );
         </sql>

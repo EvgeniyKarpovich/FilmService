@@ -1,12 +1,13 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
-import by.karpovich.filmSevice.jpa.repository.ActorRepository;
+import by.karpovich.filmSevice.jpa.specification.ActorSpecificationUtils;
 import by.karpovich.filmSevice.mapping.ActorMapper;
+import by.karpovich.filmSevice.api.dto.ActorDto;
+import by.karpovich.filmSevice.jpa.repository.ActorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static by.karpovich.filmSevice.jpa.specification.ActorSpecificationUtils.createFromCriteria;
 
 @Service
 @Transactional
@@ -64,7 +63,7 @@ public class ActorService {
     }
 
     public List<ActorDto> findByCriteria(ActorSearchCriteriaDto actorSearchCriteriaDto) {
-        List<ActorModel> actorList = actorRepository.findAll(createFromCriteria(actorSearchCriteriaDto));
+        List<ActorModel> actorList = actorRepository.findAll(ActorSpecificationUtils.createFromCriteria(actorSearchCriteriaDto));
         log.info("IN findAll - the number of actors according to these criteria = {}", actorList.size());
         return actorMapper.mapFromListEntity(actorList);
     }

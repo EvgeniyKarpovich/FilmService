@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.mapping;
 
-import by.karpovich.filmSevice.api.dto.MusicDto;
 import by.karpovich.filmSevice.jpa.model.MusicModel;
+import by.karpovich.filmSevice.api.dto.MusicDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
