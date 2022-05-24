@@ -1,12 +1,13 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.FilmDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.FilmModel;
-import by.karpovich.filmSevice.jpa.repository.FilmRepository;
+import by.karpovich.filmSevice.jpa.specification.FilmSpecificationUtils;
 import by.karpovich.filmSevice.mapping.FilmMapper;
+import by.karpovich.filmSevice.api.dto.FilmDto;
+import by.karpovich.filmSevice.jpa.repository.FilmRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static by.karpovich.filmSevice.jpa.specification.FilmSpecificationUtils.createFromCriteria;
 
 @Service
 @Transactional
@@ -54,7 +53,7 @@ public class FilmService {
     }
 
     public List<FilmDto> findAllByCriteria(FilmSearchCriteriaDto filmSearchCriteriaDto) {
-        List<FilmModel> filmList = filmRepository.findAll(createFromCriteria(filmSearchCriteriaDto));
+        List<FilmModel> filmList = filmRepository.findAll(FilmSpecificationUtils.createFromCriteria(filmSearchCriteriaDto));
         log.info("IN findAll - the number of actors according to these criteria = {}", filmList.size());
         return filmMapper.mapFromListEntity(filmList);
     }

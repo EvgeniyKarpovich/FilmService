@@ -34,15 +34,19 @@ public class UserDto {
     @NotBlank(message = "Enter login")
     private String login;
 
-    @ApiModelProperty(value = "Password", example = "", required = true, position = 5)
+    @ApiModelProperty(value = "email", example = "", required = true, position = 5)
+    @NotBlank(message = "Enter email")
+    private String email;
+
+    @ApiModelProperty(value = "password", example = "", required = true, position = 6)
     @NotBlank(message = "Enter password")
     private String password;
 
-    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 6)
+    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 7)
     @NotNull(message = "Enter Date")
     private Instant dateOfBirth;
 
-    @ApiModelProperty(value = "Role", example = "", required = true, position = 7)
+    @ApiModelProperty(value = "Role", example = "", required = true, position = 8)
     @NotNull(message = "Enter role")
     private Role role;
 

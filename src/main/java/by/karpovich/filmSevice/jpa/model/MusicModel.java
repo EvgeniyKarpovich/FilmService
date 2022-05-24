@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Musics")
+@Table(name = "MUSICS")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)

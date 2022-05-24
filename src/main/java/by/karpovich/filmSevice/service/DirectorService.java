@@ -67,7 +67,7 @@ public class DirectorService {
     }
 
     private void validateAlreadyExists(Long id, DirectorDto dto) {
-        Optional<DirectorModel> check = directorRepository.findByNameAndSurname(dto.getName(), dto.getLastName());
+        Optional<DirectorModel> check = directorRepository.findByNameAndLastname(dto.getName(), dto.getLastname());
         if (check.isPresent() && !Objects.equals(check.get().getId(), id)) {
             throw new DuplicateException(String.format("Director with id = %s and Name '%s' already exist", id, dto.getName()));
         }

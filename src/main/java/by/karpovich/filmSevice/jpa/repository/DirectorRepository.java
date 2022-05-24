@@ -11,17 +11,17 @@ import java.util.Optional;
 @Repository
 public interface DirectorRepository extends JpaRepository<DirectorModel, Long> {
 
-    List<DirectorModel> findByNameStartsWithIgnoreCase(String name);
+//    List<DirectorModel> findByNameStartsWithIgnoreCase(String name);
+//
+//    List<DirectorModel> findBySurnameStartsWithIgnoreCase(String name);
+//
+//    List<DirectorModel> findByPlaceOfBirthNameStartsWithIgnoreCase(String countryName);
+//
+//    List<DirectorModel> findByHeightGreaterThanEqual(Integer height);
+//
+//    List<DirectorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
+//
+//    List<DirectorModel> findByDateOfBirth(Instant date);
 
-    List<DirectorModel> findBySurnameStartsWithIgnoreCase(String name);
-
-    List<DirectorModel> findByPlaceOfBirthNameStartsWithIgnoreCase(String countryName);
-
-    List<DirectorModel> findByHeightGreaterThanEqual(Integer height);
-
-    List<DirectorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
-
-    List<DirectorModel> findByDateOfBirth(Instant date);
-
-    Optional<DirectorModel> findByNameAndSurname(String name, String surname);
+    Optional<DirectorModel> findByNameAndLastname(String name, String surname);
 }

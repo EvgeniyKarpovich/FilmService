@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.api.controller;
 
-import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
+import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

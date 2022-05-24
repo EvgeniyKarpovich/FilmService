@@ -39,6 +39,9 @@ public class UserModel {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "date_of_birth")
+    private Instant dateOfBirth;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;

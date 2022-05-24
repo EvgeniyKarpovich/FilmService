@@ -12,19 +12,19 @@ import java.util.Optional;
 @Repository
 public interface ActorRepository extends JpaRepository<ActorModel, Long>, JpaSpecificationExecutor<ActorModel> {
 
-    List<ActorModel> findByNameStartsWithIgnoreCase(String name);
+//    List<ActorModel> findByNameStartsWithIgnoreCase(String name);
+//
+//    Optional<ActorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
+//
+//    List<ActorModel> findBySurnameStartsWithIgnoreCase(String name);
+//
+//    List<ActorModel> findByPlaceOfBirthNameStartsWithIgnoreCase(String countryName);
+//
+//    List<ActorModel> findByDateOfBirthAfter(Instant date);
+//
+//    List<ActorModel> findByHeightGreaterThanEqual(Integer height);
+//
+//    List<ActorModel> findByAwardsGreaterThanEqual(Integer awards);
 
-    Optional<ActorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
-
-    List<ActorModel> findBySurnameStartsWithIgnoreCase(String name);
-
-    List<ActorModel> findByPlaceOfBirthNameStartsWithIgnoreCase(String countryName);
-
-    List<ActorModel> findByDateOfBirthAfter(Instant date);
-
-    List<ActorModel> findByHeightGreaterThanEqual(Integer height);
-
-    List<ActorModel> findByAwardsGreaterThanEqual(Integer awards);
-
-    Optional<ActorModel> findByNameAndSurname(String name, String surname);
+    Optional<ActorModel> findByNameAndLastname(String name, String surname);
 }

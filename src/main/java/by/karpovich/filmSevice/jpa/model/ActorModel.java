@@ -33,7 +33,7 @@ public class ActorModel {
     private String name;
 
     @Column(name = "lastName", nullable = false)
-    private String lastName;
+    private String lastname;
 
     @Column(name = "date_of_birth")
     private Instant dateOfBirth;

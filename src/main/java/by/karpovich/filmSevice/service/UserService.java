@@ -1,11 +1,11 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.UserDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
+import by.karpovich.filmSevice.mapping.UserMapper;
+import by.karpovich.filmSevice.api.dto.UserDto;
 import by.karpovich.filmSevice.jpa.model.UserModel;
 import by.karpovich.filmSevice.jpa.repository.UserRepository;
-import by.karpovich.filmSevice.mapping.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

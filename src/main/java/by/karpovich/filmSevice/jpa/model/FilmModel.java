@@ -11,12 +11,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "Films")
+@Table(name = "FILMS")
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
@@ -37,7 +35,7 @@ public class FilmModel {
 
     @ManyToOne
     @JoinColumn(name = "director_id", nullable = false)
-    private DirectorModel directorId;
+    private DirectorModel director;
 
     @Column(name = "duration_in_minutes", nullable = false)
     private int durationInMinutes;
@@ -49,13 +47,13 @@ public class FilmModel {
     @JoinColumn(name = "country_id", nullable = false)
     private CountryModel country;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany/*(fetch = FetchType.EAGER)*/
     @JoinTable(name = "ACTORS_FILMS",
             joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "actor_id", referencedColumnName = "id")})
     private List<ActorModel> actors = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany/*(fetch = FetchType.EAGER)*/
     @JoinTable(name = "MUSICS_FILMS",
             joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "id")})

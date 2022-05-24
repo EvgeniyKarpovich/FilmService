@@ -69,7 +69,7 @@ public class ActorService {
     }
 
     private void validateAlreadyExists(Long id, ActorDto dto) {
-        Optional<ActorModel> check = actorRepository.findByNameAndSurname(dto.getName(), dto.getLastName());
+        Optional<ActorModel> check = actorRepository.findByNameAndLastname(dto.getName(), dto.getLastname());
         if (check.isPresent() && !Objects.equals(check.get().getId(), id)) {
             throw new DuplicateException(String.format("Actor with id = %s already exist", id));
         }

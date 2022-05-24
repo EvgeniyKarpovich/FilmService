@@ -30,7 +30,7 @@ public class DirectorDto {
 
     @ApiModelProperty(value = "LastName", example = "", required = true, position = 3)
     @NotBlank(message = "Enter Surname")
-    private String lastName;
+    private String lastname;
 
     @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 4)
     @NotNull(message = "Enter Date")

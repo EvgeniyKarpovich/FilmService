@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.jpa.specification;
 
-import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
+import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.Instant;

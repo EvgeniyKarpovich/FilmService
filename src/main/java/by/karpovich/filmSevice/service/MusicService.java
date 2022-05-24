@@ -1,13 +1,11 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.DirectorDto;
-import by.karpovich.filmSevice.api.dto.MusicDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
-import by.karpovich.filmSevice.jpa.model.DirectorModel;
 import by.karpovich.filmSevice.jpa.model.MusicModel;
-import by.karpovich.filmSevice.jpa.repository.MusicRepository;
 import by.karpovich.filmSevice.mapping.MusicMapper;
+import by.karpovich.filmSevice.api.dto.MusicDto;
+import by.karpovich.filmSevice.jpa.repository.MusicRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,14 +30,6 @@ public class MusicService {
         MusicModel music = optionalMusic.orElseThrow(
                 () -> new NotFoundModelException(String.format("Track with id = %s not found", id)));
         log.info("IN findById -  Track with id = {} found", music.getId());
-        return musicMapper.mapFromEntity(music);
-    }
-
-    public MusicDto findByName(String name) {
-        Optional<MusicModel> optionalMusic = musicRepository.findByNameIgnoreCase(name);
-        MusicModel music = optionalMusic.orElseThrow(
-                () -> new NotFoundModelException(String.format("Film with Name  %s not found", name)));
-        log.info("IN findById -  Track with name '{}' found", music.getName());
         return musicMapper.mapFromEntity(music);
     }
 
