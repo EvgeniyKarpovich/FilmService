@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="model_country-1" author="karpovich.e">
+        <sql>
+            INSERT INTO COUNTRIES (id, name)
+            VALUES
+            ('1', 'Belarusian'),
+            ('2', 'Sweden'),
+            ('3', 'Australia');
+        </sql>
+    </changeSet>
+
+        <changeSet id="model-actors-1" author="karpovich.e">
+            <sql>
+                INSERT INTO Actors (id, name, lastname, date_of_birth, country_id, height, awards, films)
+                VALUES ('1', 'Leonardo', 'DiCaprio', '1974-11-11T18:34:51.464+00:00', '2', '184',
+                'GOLDEN_LION, CESAR, GOLDEN_GLOBE', 'Survivor, Titanic'),
+                VALUES ('2', 'Brad', 'Pit', '1965-09-12T18:34:51.464+00:00', '1', '178',  'GOLDEN_PALM_BRUNCH,
+                GOLDEN_TIGER, GOLDEN_MASK', 'Fight club, Seven'),
+                VALUES ('3', 'Tom', 'Cruise', '1963-04-09T18:34:51.464+00:00', '3', '168', '1', 'GOLDEN_LION,
+                GOLDEN_GLOBE', 'Mummy, Edge of the future' )
+            </sql>
+        </changeSet>
+
+<!--        <changeSet id="model-directors-1" author="karpovich.e">-->
+<!--            <sql>-->
+<!--                INSERT INTO Directors (id, name, lastName, date_of_birth, country_id, award)-->
+<!--                VALUES ('1', 'Steven', 'Spielberg', '1958-08-08T18:34:51.464+00:00', '179', 'true', '2', 'BAFTA_AWARD,-->
+<!--                EMPIRE_AWARD, GRAMMY, EMMY_AWARD'),-->
+<!--                VALUES ('2', 'Martin', 'Scorsese', '1971-04-10T18:34:51.464+00:00', '185', 'true', '3', 'EMPIRE_AWARD,-->
+<!--                GRAMMY, OSCAR, SATURN_AWARD'),-->
+<!--                VALUES ('3', 'Quentin', 'Tarantino', '1966-05-11T18:34:51.464+00:00', '187', 'true', '1', 'OSCAR,-->
+<!--                ACADEMY_AWARD_FROM_BEST_DIRECTOR, GOLDEN_GLOBE_AWARD, SATURN_AWARD')-->
+<!--            </sql>-->
+<!--        </changeSet>-->
+
+    <changeSet id="model-musics-1" author="karpovich.e">
+        <sql>
+            INSERT INTO Musics (id, name, author, duration_In_Minutes, genre)
+            VALUES ('1', 'Run', 'Tiesto', '3', 'ELECTRONIC'),
+            ('2', 'Santoluchia', 'Timati', '4', 'RAP'),
+            ('3', 'Run Bitch', 'TuPuck', '5', 'BLUES')
+        </sql>
+    </changeSet>
+
+    <!--    <changeSet id="model_film-1" author="karpovich.e">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO Films (id, name, genre , director_id, duration_in_minutes, description, release_date,-->
+    <!--            rating_IMDB, age_Limit, country_id)-->
+    <!--            VALUES ('1', '21', 'BlackDjack', '2011-08-08T18:34:51.464+00:00', '179','true', '1', '2', 'HORROR'),-->
+    <!--            VALUES ('2', 'Pobeg iz shoushenka', 'Vse vozmogno', '2001-08-08T18:34:51.464+00:00', '201','true', '2', '1',-->
+    <!--            'ROMANCE'),-->
+    <!--            VALUES ('3', 'Batman 1', 'Dobro pobegdaet zlo', '2009-08-08T18:34:51.464+00:00', '188','false', '1', '2',-->
+    <!--            'DRAMA')-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
+
+</databaseChangeLog>

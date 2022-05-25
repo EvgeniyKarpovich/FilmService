@@ -49,7 +49,7 @@ public class ActorModel {
 
     @Column(name = "awards")
     @Convert(converter = RewardForActorConverter.class)
-    private Set<RewardForActor> awards = new HashSet<>();
+    private List<RewardForActor> awards = new ArrayList<>();
 
     @ManyToMany(mappedBy = "actors")
     private List<FilmModel> films = new ArrayList<>();

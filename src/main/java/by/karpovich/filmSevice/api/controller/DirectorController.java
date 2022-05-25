@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class DirectorController {
 
     @ApiOperation(value = "Save Director")
     @PostMapping
-    public DirectorDto save(@RequestBody DirectorDto directorDto) {
+    public DirectorDto save(@Valid @RequestBody DirectorDto directorDto) {
         return directorService.save(directorDto);
     }
 

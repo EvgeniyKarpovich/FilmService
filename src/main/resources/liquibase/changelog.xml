@@ -10,5 +10,7 @@
     <include file="changes/musics.xml" relativeToChangelogFile="true"/>
     <include file="changes/actorsFilms.xml" relativeToChangelogFile="true"/>
     <include file="changes/musicsFilms.xml" relativeToChangelogFile="true"/>
+<!--    <include file="changes/fixCountriesTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="changes/createModel.xml" relativeToChangelogFile="true"/>-->
 
 </databaseChangeLog>

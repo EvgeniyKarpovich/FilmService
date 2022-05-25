@@ -27,9 +27,13 @@ public class RewardForActorConverter implements AttributeConverter<List<RewardFo
 
     @Override
     public List<RewardForActor> convertToEntityAttribute(String s) {
-        String[] strings = s.split(SEPARATOR);
-        return Arrays.stream(strings)
-                .map(RewardForActor::valueOf)
-                .collect(toList());
+        if (s != null) {
+            String[] strings = s.split(SEPARATOR);
+            return Arrays.stream(strings)
+                    .map(RewardForActor::valueOf)
+                    .collect(toList());
+        } else {
+            return null;
+        }
     }
 }

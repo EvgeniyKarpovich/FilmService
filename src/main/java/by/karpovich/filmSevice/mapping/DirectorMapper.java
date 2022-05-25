@@ -1,8 +1,8 @@
 package by.karpovich.filmSevice.mapping;
 
+import by.karpovich.filmSevice.api.dto.DirectorDto;
 import by.karpovich.filmSevice.jpa.model.DirectorModel;
 import by.karpovich.filmSevice.jpa.model.FilmModel;
-import by.karpovich.filmSevice.api.dto.DirectorDto;
 import by.karpovich.filmSevice.jpa.repository.FilmRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, uses = FilmMapper.class)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {FilmMapper.class, FilmRepository.class})
 public interface DirectorMapper {
 
     @Autowired
-     FilmRepository repository = null;
+    FilmRepository repository = null;
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dateOfCreation", ignore = true)

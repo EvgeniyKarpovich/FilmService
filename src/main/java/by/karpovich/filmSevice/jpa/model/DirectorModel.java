@@ -29,7 +29,7 @@ public class DirectorModel {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastname;
 
     @Column(name = "date_of_birth")
@@ -37,8 +37,8 @@ public class DirectorModel {
 
     //    private byte[] image;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id")
     private CountryModel placeOfBirth;
 
     @OneToMany(mappedBy = "director")

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class CountryController {
 
     @ApiOperation(value = "Save country")
     @PostMapping
-    public void save(@RequestBody CountryDto countryDto) {
+    public void save(@RequestBody @Valid CountryDto countryDto) {
         countryService.save(countryDto);
     }
 

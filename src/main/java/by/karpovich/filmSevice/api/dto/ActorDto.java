@@ -51,7 +51,7 @@ public class ActorDto {
     private Integer height;
 
     @ApiModelProperty(value = "Awards", dataType = "Set", example = "", position = 7)
-    private Set<RewardForActor> awards = new HashSet<>();
+    private List<RewardForActor> awards = new ArrayList<>();
 
     @ApiModelProperty(value = "Films", dataType = "List", example = "", position = 8)
     private List<Long> films = new ArrayList<>();
