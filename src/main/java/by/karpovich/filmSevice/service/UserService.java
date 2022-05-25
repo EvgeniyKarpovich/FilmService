@@ -26,6 +26,13 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
+    public UserDto findByLogin(String login) {
+        Optional<UserModel> userModel = userRepository.findByLogin(login);
+        UserModel model = userModel.orElseThrow(
+                () -> new NotFoundModelException(String.format("User with id = %s not found", login)));
+        return userMapper.mapFromEntity(model);
+    }
+
     public UserDto findById(Long id) {
         Optional<UserModel> userDto = userRepository.findById(id);
         UserModel userModel = userDto.orElseThrow(

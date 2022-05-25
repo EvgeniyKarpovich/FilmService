@@ -13,7 +13,7 @@
             login varchar(30) NOT NULL,
             password varchar(30) NOT NULL,
             date_of_birth timestamp WITH time ZONE DEFAULT CURRENT_DATE,
-            lastName varchar(30) NOT NULL,
+            lastname varchar(30) NOT NULL,
             email varchar(30) NOT NULL,
             role varchar(30) NOT NULL,
             date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,

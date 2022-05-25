@@ -11,6 +11,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,9 +28,9 @@ public class UserDto {
     @NotBlank(message = "Enter Name")
     private String name;
 
-    @ApiModelProperty(value = "LastName", example = "", required = true, position = 3)
+    @ApiModelProperty(value = "Lastname", example = "", required = true, position = 3)
     @NotBlank(message = "Enter Surname")
-    private String lastName;
+    private String lastname;
 
     @ApiModelProperty(value = "Login", example = "", required = true, position = 4)
     @NotBlank(message = "Enter login")
@@ -48,6 +50,6 @@ public class UserDto {
 
     @ApiModelProperty(value = "Role", example = "", required = true, position = 8)
     @NotNull(message = "Enter role")
-    private Role role;
+    private Set<Role> role = new HashSet<>();
 
 }

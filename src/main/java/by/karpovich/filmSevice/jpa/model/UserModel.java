@@ -1,5 +1,6 @@
 package by.karpovich.filmSevice.jpa.model;
 
+import by.karpovich.filmSevice.jpa.converter.RolesConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -33,8 +36,8 @@ public class UserModel {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
-    private String lastName;
+    @Column(name = "lastname", nullable = false)
+    private String lastname;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -43,8 +46,8 @@ public class UserModel {
     private Instant dateOfBirth;
 
     @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @Convert(converter = RolesConverter.class)
+    private Set<Role> role = new HashSet<>();
 
     @CreatedDate
     @Column(name = "date_of_creation", updatable = false)
