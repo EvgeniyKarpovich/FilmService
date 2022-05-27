@@ -1,6 +1,5 @@
 package by.karpovich.filmSevice.jpa.model;
 
-import by.karpovich.filmSevice.jpa.converter.RolesConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -46,8 +43,7 @@ public class UserModel {
     private Instant dateOfBirth;
 
     @Column(name = "role", nullable = false)
-    @Convert(converter = RolesConverter.class)
-    private Set<Role> role = new HashSet<>();
+    private String role;
 
     @CreatedDate
     @Column(name = "date_of_creation", updatable = false)

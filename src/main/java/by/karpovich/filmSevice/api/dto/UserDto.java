@@ -1,6 +1,5 @@
 package by.karpovich.filmSevice.api.dto;
 
-import by.karpovich.filmSevice.jpa.model.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,6 +48,6 @@ public class UserDto {
 
     @ApiModelProperty(value = "Role", example = "", required = true, position = 8)
     @NotNull(message = "Enter role")
-    private Set<Role> role = new HashSet<>();
+    private String role;
 
 }
