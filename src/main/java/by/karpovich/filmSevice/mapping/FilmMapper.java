@@ -1,62 +1,74 @@
 package by.karpovich.filmSevice.mapping;
 
-import by.karpovich.filmSevice.jpa.model.ActorModel;
-import by.karpovich.filmSevice.jpa.model.FilmModel;
-import by.karpovich.filmSevice.jpa.model.MusicModel;
 import by.karpovich.filmSevice.api.dto.FilmDto;
-import by.karpovich.filmSevice.jpa.repository.ActorRepository;
-import by.karpovich.filmSevice.jpa.repository.MusicRepository;
+import by.karpovich.filmSevice.jpa.model.CountryModel;
+import by.karpovich.filmSevice.jpa.model.DirectorModel;
+import by.karpovich.filmSevice.jpa.model.FilmModel;
 import by.karpovich.filmSevice.service.CountryService;
 import by.karpovich.filmSevice.service.DirectorService;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {ActorMapper.class, MusicMapper.class})
-public interface FilmMapper {
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
+        uses = {ActorMapper.class, MusicMapper.class,
+                DirectorMapper.class, CountryMapper.class})
+public abstract class FilmMapper {
 
     @Autowired
-    CountryService service = null;
+    private DirectorService directorService;
     @Autowired
-    ActorRepository actorRepository = null;
-    @Autowired
-    MusicRepository musicRepository = null;
-    @Autowired
-    DirectorService directorService = null;
+    private CountryService countryService;
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dateOfCreation", ignore = true)
     @Mapping(target = "dateOfChange", ignore = true)
+//    @Mapping(target = "actors", ignore = true)
+//    @Mapping(target = "musics", ignore = true)
     @Mapping(source = "directorId", target = "director.id")
     @Mapping(source = "countryId", target = "country.id")
-    FilmModel mapFromDto(FilmDto countryDto);
+    public abstract FilmModel mapFromDto(FilmDto countryDto);
 
     @Mapping(source = "director.id", target = "directorId")
     @Mapping(source = "country.id", target = "countryId")
-    FilmDto mapFromEntity(FilmModel country);
+//    @Mapping(target = "actors", ignore = true)
+//    @Mapping(target = "musics", ignore = true)
+    public abstract FilmDto mapFromEntity(FilmModel country);
 
-    List<FilmModel> mapFromListDto(List<FilmDto> countryDtoList);
+    public abstract List<FilmModel> mapFromListDto(List<FilmDto> countryDtoList);
 
-    List<FilmDto> mapFromListEntity(List<FilmModel> countries);
+    public abstract List<FilmDto> mapFromListEntity(List<FilmModel> countries);
 
-    default Long fromMusic(MusicModel model) {
-        return model == null ? null : model.getId();
+    @AfterMapping
+    protected void setCountry(@MappingTarget FilmModel model, FilmDto dto) {
+        CountryModel country = countryService.findByIdWhichWillReturnModel(dto.getCountryId());
+
+        model.setCountry(country);
     }
 
-    default MusicModel fromLongToMusic(Long musicId) {
-        return musicId == null ? null : musicRepository.getById(musicId);
+    @AfterMapping
+    protected void setDirector(@MappingTarget FilmModel model, FilmDto dto) {
+        DirectorModel director = directorService.findByIdWhichWillReturnModel(dto.getDirectorId());
+
+        model.setDirector(director);
     }
 
-    default Long fromActor(ActorModel model) {
-        return model == null ? null : model.getId();
-    }
-
-    default ActorModel fromLongToActor(Long actorId) {
-        return actorId == null ? null : actorRepository.getById(actorId);
-    }
+//    default Long fromMusic(MusicModel model) {
+//        return model == null ? null : model.getId();
+//    }
+//
+//    default MusicModel fromLongToMusic(Long musicId) {
+//        return musicId == null ? null : musicRepository.getById(musicId);
+//    }
+//
+//    default Long fromActor(ActorModel model) {
+//        return model == null ? null : model.getId();
+//    }
+//
+//    default ActorModel fromLongToActor(Long actorId) {
+//        return actorId == null ? null : actorRepository.getById(actorId);
+//    }
 
 //    @AfterMapping
 //    protected void mapActor(FilmDto dto, @MappingTarget FilmModel model) {
@@ -79,18 +91,5 @@ public interface FilmMapper {
 //        }
 //        model.setMusics(musics);
 //    }
-//
-//    @AfterMapping
-//    protected void setCountry(@MappingTarget FilmModel model, FilmDto dto) {
-//        CountryModel country = service.findByIdWhichWillReturnModel(dto.getCountryId());
-//
-//        model.setCountry(country);
-//    }
-//
-//    @AfterMapping
-//    protected void setDirector(@MappingTarget FilmModel model, FilmDto dto) {
-//        DirectorModel director = directorService.findByIdWhichWillReturnModel(dto.getDirectorId());
-//
-//        model.setDirector(director);
-//    }
+
 }

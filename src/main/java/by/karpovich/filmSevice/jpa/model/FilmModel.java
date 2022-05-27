@@ -47,7 +47,7 @@ public class FilmModel {
     @JoinColumn(name = "country_id", nullable = false)
     private CountryModel country;
 
-    @ManyToMany/*(fetch = FetchType.EAGER)*/
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ACTORS_FILMS",
             joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "actor_id", referencedColumnName = "id")})

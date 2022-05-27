@@ -45,7 +45,7 @@ public class UserDto {
     private String password;
 
     @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 7)
-    @NotNull(message = "Enter Date")
+//    @NotNull(message = "Enter Date")
     private Instant dateOfBirth;
 
     @ApiModelProperty(value = "Role", example = "", required = true, position = 8)

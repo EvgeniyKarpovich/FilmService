@@ -1,7 +1,6 @@
 package by.karpovich.filmSevice.jpa.security;
 
 import by.karpovich.filmSevice.api.dto.UserDto;
-import by.karpovich.filmSevice.jpa.model.UserModel;
 import by.karpovich.filmSevice.service.UserService;
 import io.jsonwebtoken.Claims;
 import lombok.NonNull;

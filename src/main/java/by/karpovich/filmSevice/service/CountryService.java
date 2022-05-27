@@ -80,10 +80,9 @@ public class CountryService {
         return countryMapper.mapFromEntity(country);
     }
 
-
     public CountryModel findByIdWhichWillReturnModel(Long id) {
         Optional<CountryModel> optionalCountry = countryRepository.findById(id);
         return optionalCountry.orElseThrow(
-                () -> new EntityNotFoundException("Country with ID = " + id + " not found"));
+                () -> new NotFoundModelException("Country with ID = " + id + " not found"));
     }
 }

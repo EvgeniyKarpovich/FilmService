@@ -29,7 +29,7 @@ public class JwtProvider {
         this.jwtRefreshSecret = jwtRefreshSecret;
     }
 
-    public String generateAccessToken(UserDto user) {
+    public String generateAccessToken(@NonNull UserDto user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant accessExpirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
         final Date accessExpiration = Date.from(accessExpirationInstant);
@@ -37,13 +37,13 @@ public class JwtProvider {
                 .setSubject(user.getLogin())
                 .setExpiration(accessExpiration)
                 .signWith(SignatureAlgorithm.HS512, jwtAccessSecret)
-                .claim("roles", user.getRole())
-                .claim("firstName", user.getName())
+                .claim("role", user.getRole())
+                .claim("name", user.getName())
                 .compact();
         return accessToken;
     }
 
-    public String generateRefreshToken(UserDto user) {
+    public String generateRefreshToken(@NonNull UserDto user) {
         final LocalDateTime now = LocalDateTime.now();
         final Instant refreshExpirationInstant = now.plusDays(30).atZone(ZoneId.systemDefault()).toInstant();
         final Date refreshExpiration = Date.from(refreshExpirationInstant);

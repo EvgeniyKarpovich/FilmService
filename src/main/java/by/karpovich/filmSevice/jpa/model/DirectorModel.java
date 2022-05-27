@@ -37,7 +37,7 @@ public class DirectorModel {
 
     //    private byte[] image;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "country_id")
     private CountryModel placeOfBirth;
 

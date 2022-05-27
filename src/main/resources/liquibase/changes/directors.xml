@@ -10,12 +10,12 @@
             CREATE TABLE DIRECTORS(
             id serial PRIMARY KEY,
             name varchar(30) NOT NULL,
-            lastName varchar(30) NOT NULL,
+            lastname varchar(30) NOT NULL,
             date_of_birth timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             country_id integer NOT NULL,
             date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE,
-            CONSTRAINT ct_director UNIQUE(name, lastName),
+            CONSTRAINT ct_director UNIQUE(name, lastname),
             CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES COUNTRIES(id)
             );
         </sql>

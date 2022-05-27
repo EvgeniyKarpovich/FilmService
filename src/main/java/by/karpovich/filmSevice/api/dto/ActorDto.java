@@ -1,6 +1,7 @@
 package by.karpovich.filmSevice.api.dto;
 
 import by.karpovich.filmSevice.api.validation.ValidCountry;
+import by.karpovich.filmSevice.jpa.model.FilmModel;
 import by.karpovich.filmSevice.jpa.model.RewardForActor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,9 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,11 +49,11 @@ public class ActorDto {
     @Min(value = 1, message = "height must be positive")
     private Integer height;
 
-    @ApiModelProperty(value = "Awards", dataType = "Set", example = "", position = 7)
+    @ApiModelProperty(value = "Awards", example = "", position = 7)
     private List<RewardForActor> awards = new ArrayList<>();
 
-    @ApiModelProperty(value = "Films", dataType = "List", example = "", position = 8)
-    private List<Long> films = new ArrayList<>();
+    @ApiModelProperty(value = "Films", example = "", position = 8)
+    private List<FilmModel> films = new ArrayList<>();
 
     //    private byte[] image;
 }

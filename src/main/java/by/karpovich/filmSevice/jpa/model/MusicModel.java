@@ -39,7 +39,7 @@ public class MusicModel {
     @Enumerated(EnumType.STRING)
     private GenreMusic genre;
 
-    @ManyToMany(mappedBy = "musics")
+    @ManyToMany(mappedBy = "musics", fetch = FetchType.LAZY)
     private List<FilmModel> films = new ArrayList<>();
 
     @CreatedDate

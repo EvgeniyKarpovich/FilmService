@@ -12,9 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "actors")
@@ -32,7 +30,7 @@ public class ActorModel {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "lastName", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastname;
 
     @Column(name = "date_of_birth")
@@ -51,7 +49,7 @@ public class ActorModel {
     @Convert(converter = RewardForActorConverter.class)
     private List<RewardForActor> awards = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "actors")
+    @ManyToMany(mappedBy = "actors", fetch = FetchType.LAZY)
     private List<FilmModel> films = new ArrayList<>();
 
     @CreatedDate
