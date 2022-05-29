@@ -7,61 +7,83 @@
 
     <changeSet id="model_country-1" author="karpovich.e">
         <sql>
-            INSERT INTO COUNTRIES (id, name)
+            INSERT INTO COUNTRIES ( name)
             VALUES
-            ('1', 'Belarusian'),
-            ('2', 'Sweden'),
-            ('3', 'Australia');
+            ('Belarusian'),
+            ('Sweden'),
+            ('Australia');
         </sql>
     </changeSet>
-    
-<!--    <changeSet id="model-actors-1" author="karpovich.e">-->
-<!--        <sql>-->
-<!--            INSERT INTO Actors (id, name, lastname, date_of_birth, country_id, height, awards)-->
-<!--            VALUES ('1', 'Leonardo', 'DiCaprio', '1974-11-11T18:34:51.464+00:00', '2', '184',-->
-<!--            'GOLDEN_LION, CESAR, GOLDEN_GLOBE', '1'&lt;!&ndash;, 'Survivor, Titanic'&ndash;&gt;),-->
-<!--            ('2', 'Brad', 'Pit', '1965-09-12T18:34:51.464+00:00', '1', '178', 'GOLDEN_PALM_BRUNCH,-->
-<!--            GOLDEN_TIGER, GOLDEN_MASK'&lt;!&ndash;, 'Fight club, Seven'&ndash;&gt;),-->
-<!--            ('3', 'Tom', 'Cruise', '1963-04-09T18:34:51.464+00:00', '3', '168', '1', 'GOLDEN_LION,-->
-<!--            GOLDEN_GLOBE'&lt;!&ndash;, 'Mummy, Edge of the future' &ndash;&gt;)-->
-<!--        </sql>-->
-<!--    </changeSet>-->
 
-<!--    <changeSet id="model-directors-1" author="karpovich.e">-->
-<!--        <sql>-->
-<!--            INSERT INTO Directors (id, name, lastName, date_of_birth, country_id)-->
-<!--            VALUES ('1', 'Steven', 'Spielberg', '1958-08-08T18:34:51.464+00:00', '179', '2'),-->
-<!--            ('2', 'Martin', 'Scorsese', '1971-04-10T18:34:51.464+00:00', '185', '3',),-->
-<!--            ('3', 'Quentin', 'Tarantino', '1966-05-11T18:34:51.464+00:00', '187', '1')-->
-<!--        </sql>-->
-<!--    </changeSet>-->
-
-<!--    <changeSet id="model-musics-1" author="karpovich.e">-->
-<!--        <sql>-->
-<!--            INSERT INTO Musics (id, name, author, duration_In_Minutes, genre)-->
-<!--            VALUES ('1', 'Run', 'Tiesto', '3', 'ELECTRONIC'),-->
-<!--            ('2', 'Santoluchia', 'Timati', '4', 'RAP'),-->
-<!--            ('3', 'Run Bitch', 'TuPuck', '5', 'BLUES')-->
-<!--        </sql>-->
-<!--    </changeSet>-->
-
-<!--    <changeSet id="model_film-1" author="karpovich.e">-->
-<!--        <sql>-->
-<!--            INSERT INTO Films (id, name, genre , director_id, duration_in_minutes, rating_IMDB, country_id,-->
-<!--            description, age_Limit)-->
-<!--            VALUES ('1', '21', 'HORROR', '1','179', '7.8', '2', 'Casino', '18'),-->
-<!--            ('2', 'Pobeg iz shoushenka', 'ROMANCE', '3', '145', '6.8', '3', 'Cep calm', '16'),-->
-<!--            ('3', 'Batman','DRAMA', 2, '188', '5.9', '2', 'Dobro pobegdaet zlo', '12')-->
-<!--        </sql>-->
-<!--    </changeSet>-->
+    <changeSet id="model_role-1" author="karpovich.e">
+        <sql>
+            INSERT INTO ROLES (name, status)
+            VALUES
+            ('ROLE_ADMIN', ''),
+            ('ROLE_USER', ''),
+            ('ROLE_MANAGER', '');
+        </sql>
+    </changeSet>
 
     <changeSet id="model-users-1" author="karpovich.e">
         <sql>
-            INSERT INTO USERS (id, name, lastname, login, password, date_of_birth, role, email)
-            VALUES ('1', 'Evgeniy', 'Karpovich', 'Geka', '123', '1992-04-10T18:34:51.464+00:00', 'ADMIN', 'Phoenix-zzz@mail.ru'),
-            ('2', 'Petr', 'Petrov', 'Petro', '12345', '2000-04-10T18:34:51.464+00:00', 'USER', 'Petro@mail.ru'),
-            ('3', 'Vasya', 'Vasilev', 'Vasek', '12345', '2008-04-10T18:34:51.464+00:00', 'USER', 'Vasyz@mail.ru')
+            INSERT INTO USERS (name, lastname, login, password, date_of_birth, role, email, status)
+            VALUES ('Evgeniy', 'Karpovich', 'Geka',
+            '$2a$12$sGh9tjPSgPyMY4yF3NIDSexQiei7.xfY66KMNDNc0SL7hiBOmv8qK', '1992-04-10T18:34:51.464+00:00', 'ADMIN',
+            'Phoenix-zzz@mail.ru', 'ACTIVE'),
+            ('Petr', 'Petrov', 'Petro', '$2a$12$sGh9tjPSgPyMY4yF3NIDSexQiei7.xfY66KMNDNc0SL7hiBOmv8qK', '2000-04-10T18:34:51.464+00:00', 'USER', 'Petro@mail.ru', 'ACTIVE'),
+            ('Vasya', 'Vasilev', 'Vasek', '$2a$12$sGh9tjPSgPyMY4yF3NIDSexQiei7.xfY66KMNDNc0SL7hiBOmv8qK', '2008-04-10T18:34:51.464+00:00', 'USER', 'Vasyz@mail.ru',
+            'NOT_ACTIVE')
         </sql>
     </changeSet>
+
+    <changeSet id="model-us_rol-1" author="karpovich.e">
+        <sql>
+            INSERT INTO USERS_ROLES (user_id, role_id)
+            VALUES ('1', '1'),
+            ('2', '2'),
+            ('3', '2')
+        </sql>
+    </changeSet>
+
+    <!--    <changeSet id="model-actors-1" author="karpovich.e">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO Actors (id, name, lastname, date_of_birth, country_id, height, awards)-->
+    <!--            VALUES ('1', 'Leonardo', 'DiCaprio', '1974-11-11T18:34:51.464+00:00', '2', '184',-->
+    <!--            'GOLDEN_LION, CESAR, GOLDEN_GLOBE', '1'&lt;!&ndash;, 'Survivor, Titanic'&ndash;&gt;),-->
+    <!--            ('2', 'Brad', 'Pit', '1965-09-12T18:34:51.464+00:00', '1', '178', 'GOLDEN_PALM_BRUNCH,-->
+    <!--            GOLDEN_TIGER, GOLDEN_MASK'&lt;!&ndash;, 'Fight club, Seven'&ndash;&gt;),-->
+    <!--            ('3', 'Tom', 'Cruise', '1963-04-09T18:34:51.464+00:00', '3', '168', '1', 'GOLDEN_LION,-->
+    <!--            GOLDEN_GLOBE'&lt;!&ndash;, 'Mummy, Edge of the future' &ndash;&gt;)-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
+
+    <!--    <changeSet id="model-directors-1" author="karpovich.e">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO Directors (id, name, lastName, date_of_birth, country_id)-->
+    <!--            VALUES ('1', 'Steven', 'Spielberg', '1958-08-08T18:34:51.464+00:00', '179', '2'),-->
+    <!--            ('2', 'Martin', 'Scorsese', '1971-04-10T18:34:51.464+00:00', '185', '3',),-->
+    <!--            ('3', 'Quentin', 'Tarantino', '1966-05-11T18:34:51.464+00:00', '187', '1')-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
+
+    <!--    <changeSet id="model-musics-1" author="karpovich.e">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO Musics (id, name, author, duration_In_Minutes, genre)-->
+    <!--            VALUES ('1', 'Run', 'Tiesto', '3', 'ELECTRONIC'),-->
+    <!--            ('2', 'Santoluchia', 'Timati', '4', 'RAP'),-->
+    <!--            ('3', 'Run Bitch', 'TuPuck', '5', 'BLUES')-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
+
+    <!--    <changeSet id="model_film-1" author="karpovich.e">-->
+    <!--        <sql>-->
+    <!--            INSERT INTO Films (id, name, genre , director_id, duration_in_minutes, rating_IMDB, country_id,-->
+    <!--            description, age_Limit)-->
+    <!--            VALUES ('1', '21', 'HORROR', '1','179', '7.8', '2', 'Casino', '18'),-->
+    <!--            ('2', 'Pobeg iz shoushenka', 'ROMANCE', '3', '145', '6.8', '3', 'Cep calm', '16'),-->
+    <!--            ('3', 'Batman','DRAMA', 2, '188', '5.9', '2', 'Dobro pobegdaet zlo', '12')-->
+    <!--        </sql>-->
+    <!--    </changeSet>-->
 
 </databaseChangeLog>

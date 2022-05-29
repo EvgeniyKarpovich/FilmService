@@ -53,7 +53,7 @@ public class ActorDto {
     private List<RewardForActor> awards = new ArrayList<>();
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
-    private List<FilmModel> films = new ArrayList<>();
+    private List<Long> films = new ArrayList<>();
 
     //    private byte[] image;
 }

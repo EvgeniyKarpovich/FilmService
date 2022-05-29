@@ -43,7 +43,7 @@ public class DirectorDto {
     private Long countryId;
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
-    private List<FilmModel> films = new ArrayList<>();
+    private List<Long> films = new ArrayList<>();
 
     //    private byte[] image;
 }

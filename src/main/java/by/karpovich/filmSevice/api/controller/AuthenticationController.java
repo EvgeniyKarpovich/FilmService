@@ -1,18 +1,22 @@
 package by.karpovich.filmSevice.api.controller;
 
-import by.karpovich.filmSevice.jpa.security.AuthRequest;
-import by.karpovich.filmSevice.jpa.security.AuthResponse;
-import by.karpovich.filmSevice.jpa.security.JWTUtil;
+import by.karpovich.filmSevice.api.dto.AuthenticationRequestDto;
+import by.karpovich.filmSevice.api.dto.JwtResponse;
+import by.karpovich.filmSevice.jpa.model.UserModel;
+import by.karpovich.filmSevice.jpa.security.jwt.JwtTokenProvider;
+import by.karpovich.filmSevice.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,21 +26,32 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private JWTUtil jwtTokenUtil;
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthResponse createAuthenticationToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication;
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
-            System.out.println(authentication);
-        } catch (BadCredentialsException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Логин или пароль неправильны", e);
-        }
-        // при создании токена в него кладется username как Subject и список authorities как кастомный claim
-        String jwt = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
+            String login = requestDto.getLogin();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
+            UserModel user = userService.findByLogin(login);
 
-        return new AuthResponse(jwt);
+            if (user == null) {
+                throw new UsernameNotFoundException("User with login: " + login + " not found");
+            }
+
+            String token = jwtTokenProvider.createToken(login, user.getRoles());
+
+            JwtResponse response = new JwtResponse();
+            response.setToken(token);
+//            Map<Object, Object> response = new HashMap<>();
+//            response.put("login", login);
+//            response.put("token", token);
+
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid login or password");
+        }
     }
 }

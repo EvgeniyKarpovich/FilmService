@@ -1,17 +1,22 @@
 package by.karpovich.filmSevice.service;
 
+import by.karpovich.filmSevice.api.dto.UserDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
-import by.karpovich.filmSevice.mapping.UserMapper;
-import by.karpovich.filmSevice.api.dto.UserDto;
+import by.karpovich.filmSevice.jpa.model.Role;
+import by.karpovich.filmSevice.jpa.model.Status;
 import by.karpovich.filmSevice.jpa.model.UserModel;
+import by.karpovich.filmSevice.jpa.repository.RoleRepository;
 import by.karpovich.filmSevice.jpa.repository.UserRepository;
+import by.karpovich.filmSevice.mapping.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,12 +30,30 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public UserDto findByLogin(String login) {
+    public UserModel register(UserModel user) {
+        Role roleUser = roleRepository.findByName("ROLE_USER");
+        List<Role> userRoles = new ArrayList<>();
+        userRoles.add(roleUser);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(userRoles);
+        user.setStatus(Status.ACTIVE);
+        UserModel registeredUser = userRepository.save(user);
+
+        log.info("IN register - user: {} successfully registered", registeredUser);
+        return registeredUser;
+    }
+
+    public UserModel findByLogin(String login) {
         Optional<UserModel> userModel = userRepository.findByLogin(login);
         UserModel model = userModel.orElseThrow(
                 () -> new NotFoundModelException(String.format("User with id = %s not found", login)));
-        return userMapper.mapFromEntity(model);
+        return model;
     }
 
     public UserDto findById(Long id) {

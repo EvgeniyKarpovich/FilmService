@@ -2,9 +2,7 @@ package by.karpovich.filmSevice.api.dto;
 
 import by.karpovich.filmSevice.api.validation.ValidCountry;
 import by.karpovich.filmSevice.api.validation.ValidDirector;
-import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.jpa.model.GenreForFilm;
-import by.karpovich.filmSevice.jpa.model.MusicModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -63,10 +61,10 @@ public class FilmDto {
     private int ageLimit;
 
     @ApiModelProperty(value = "Actors", example = "", position = 10)
-    private List<ActorModel> actors = new ArrayList<>();
+    private List<Long> actors = new ArrayList<>();
 
     @ApiModelProperty(value = "music", example = "", position = 11)
-    private List<MusicModel> musics = new ArrayList<>();
+    private List<Long> musics = new ArrayList<>();
 
     //    private byte[] image;
 }

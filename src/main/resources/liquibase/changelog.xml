@@ -11,6 +11,8 @@
     <include file="changes/actorsFilms.xml" relativeToChangelogFile="true"/>
     <include file="changes/musicsFilms.xml" relativeToChangelogFile="true"/>
     <include file="changes/users.xml" relativeToChangelogFile="true"/>
+    <include file="changes/roles.xml" relativeToChangelogFile="true"/>
+    <include file="changes/usersRoles.xml" relativeToChangelogFile="true"/>
     <include file="changes/createModel.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
