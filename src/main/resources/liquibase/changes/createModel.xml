@@ -29,10 +29,10 @@
         <sql>
             INSERT INTO USERS (name, lastname, login, password, date_of_birth, email, status)
             VALUES ('Evgeniy', 'Karpovich', 'Geka',
-            '{bcrypt}$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '1992-04-10T18:34:51.464+00:00',
+            '$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '1992-04-10T18:34:51.464+00:00',
             'Phoenix-zzz@mail.ru', 'ACTIVE'),
-            ('Petr', 'Petrov', 'Petro', '{bcrypt}$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '2000-04-10T18:34:51.464+00:00', 'Petro@mail.ru', 'ACTIVE'),
-            ('Vasya', 'Vasilev', 'Vasek', '{bcrypt}$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '2008-04-10T18:34:51.464+00:00', 'Vasyz@mail.ru',
+            ('Petr', 'Petrov', 'Petro', '$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '2000-04-10T18:34:51.464+00:00', 'Petro@mail.ru', 'ACTIVE'),
+            ('Vasya', 'Vasilev', 'Vasek', '$2a$12$qbv4T9UD739SpybOnajp0uMAK327pY0o3jetJKEhdQpMfZP6HJ9ea', '2008-04-10T18:34:51.464+00:00', 'Vasya@mail.ru',
             'NOT_ACTIVE')
         </sql>
     </changeSet>
