@@ -29,6 +29,9 @@ public class FilmModel {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "release_date", nullable = false)
+    private Instant releaseDate;
+
     @Column(name = "genre", nullable = false)
     @Enumerated(EnumType.STRING)
     private GenreForFilm genre;

@@ -15,7 +15,6 @@
             date_of_birth timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             lastname varchar(30) NOT NULL,
             email varchar(30) NOT NULL,
-            role varchar(100) NOT NULL,
             status varchar(100) NOT NULL,
             date_of_creation timestamp WITH time ZONE DEFAULT CURRENT_DATE,
             date_of_change timestamp WITH time ZONE DEFAULT CURRENT_DATE,

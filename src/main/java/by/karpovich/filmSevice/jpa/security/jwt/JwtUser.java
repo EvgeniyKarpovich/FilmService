@@ -9,9 +9,9 @@ import java.util.Collection;
 public class JwtUser implements UserDetails {
 
     private final Long id;
-    private final String username;
-    private final String firstName;
-    private final String lastName;
+    private final String login;
+    private final String name;
+    private final String lastname;
     private final String password;
     private final String email;
     private final boolean enabled;
@@ -19,18 +19,18 @@ public class JwtUser implements UserDetails {
 
     public JwtUser(
             Long id,
-            String username,
-            String firstName,
-            String lastName,
+            String login,
+            String name,
+            String lastname,
             String email,
             String password, Collection<? extends GrantedAuthority> authorities,
             boolean enabled
 
     ) {
         this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.login = login;
+        this.name = name;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
@@ -44,7 +44,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return login;
     }
 
     @JsonIgnore
@@ -66,11 +66,11 @@ public class JwtUser implements UserDetails {
     }
 
     public String getFirstname() {
-        return firstName;
+        return name;
     }
 
     public String getLastname() {
-        return lastName;
+        return lastname;
     }
 
     public String getEmail() {

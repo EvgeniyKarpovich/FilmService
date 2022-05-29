@@ -10,9 +10,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,10 @@ public class FilmDto {
     @ApiModelProperty(value = "Name", example = "", required = true, position = 2)
     @NotBlank(message = "Enter Name")
     private String name;
+
+    @ApiModelProperty(value = "releaseDate", example = "2022-01-22T18:34:51.464+00:00", position = 12)
+    @NotNull(message = "Enter Date")
+    private Instant releaseDate;
 
     @ApiModelProperty(value = "Genre", example = "DRAMA", required = true, position = 3)
     @NotNull(message = "Enter Genre")
