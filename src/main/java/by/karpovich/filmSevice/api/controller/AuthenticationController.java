@@ -3,6 +3,7 @@ package by.karpovich.filmSevice.api.controller;
 import by.karpovich.filmSevice.api.dto.AuthenticationRequestDto;
 import by.karpovich.filmSevice.api.dto.JwtResponse;
 import by.karpovich.filmSevice.jpa.model.UserModel;
+import by.karpovich.filmSevice.jpa.repository.UserRepository;
 import by.karpovich.filmSevice.jpa.security.jwt.JwtTokenProvider;
 import by.karpovich.filmSevice.service.UserService;
 import io.swagger.annotations.Api;
@@ -13,10 +14,14 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -44,14 +49,19 @@ public class AuthenticationController {
             String token = jwtTokenProvider.createToken(login, user.getRoles());
 
             JwtResponse response = new JwtResponse();
+            response.setUsername(login);
             response.setToken(token);
-//            Map<Object, Object> response = new HashMap<>();
-//            response.put("login", login);
-//            response.put("token", token);
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid login or password");
         }
     }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
+        securityContextLogoutHandler.logout(request, response, null);
+    }
+
 }

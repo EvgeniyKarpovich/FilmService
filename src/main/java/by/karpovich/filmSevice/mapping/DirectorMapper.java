@@ -25,15 +25,15 @@ public abstract class DirectorMapper {
     @Mapping(target = "dateOfChange", ignore = true)
     @Mapping(target = "films", ignore = true)
     @Mapping(source = "countryId", target = "placeOfBirth.id")
-    public abstract DirectorModel mapFromDto(DirectorDto countryDto);
+    public abstract DirectorModel mapFromDto(DirectorDto dto);
 
     @Mapping(source = "placeOfBirth.id", target = "countryId")
     @Mapping(target = "films", ignore = true)
-    public abstract DirectorDto mapFromEntity(DirectorModel country);
+    public abstract DirectorDto mapFromEntity(DirectorModel mode);
 
-    public abstract List<DirectorModel> mapFromListDto(List<DirectorDto> countryDtoList);
+    public abstract List<DirectorModel> mapFromListDto(List<DirectorDto> dtoList);
 
-    public abstract List<DirectorDto> mapFromListEntity(List<DirectorModel> countries);
+    public abstract List<DirectorDto> mapFromListEntity(List<DirectorModel> modelList);
 
     @AfterMapping
     protected void mapFilms(DirectorDto dto, @MappingTarget DirectorModel model) {
@@ -52,15 +52,5 @@ public abstract class DirectorMapper {
 
         model.setPlaceOfBirth(country);
     }
-
-//    @AfterMapping
-//    protected  Long fromFilm(FilmModel model) {
-//        return model == null ? null : model.getId();
-//    }
-//
-//    @AfterMapping
-//    protected   FilmModel fromLongToFilm(Long filmId) {
-//        return filmId == null ? null : repository.getById(filmId);
-//    }
 
 }

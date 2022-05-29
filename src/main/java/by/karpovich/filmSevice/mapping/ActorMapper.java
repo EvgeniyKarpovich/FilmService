@@ -26,15 +26,15 @@ public abstract class ActorMapper {
     @Mapping(target = "dateOfChange", ignore = true)
     @Mapping(target = "films", ignore = true)
     @Mapping(source = "countryId", target = "placeOfBirth.id")
-    public abstract ActorModel mapFromDto(ActorDto countryDto);
+    public abstract ActorModel mapFromDto(ActorDto dto);
 
     @Mapping(source = "placeOfBirth.id", target = "countryId")
     @Mapping(target = "films", ignore = true)
-    public abstract ActorDto mapFromEntity(ActorModel country);
+    public abstract ActorDto mapFromEntity(ActorModel model);
 
-    public abstract List<ActorModel> mapFromListDto(List<ActorDto> countryDtoList);
+    public abstract List<ActorModel> mapFromListDto(List<ActorDto> dtoList);
 
-    public abstract List<ActorDto> mapFromListEntity(List<ActorModel> countries);
+    public abstract List<ActorDto> mapFromListEntity(List<ActorModel> modelList);
 
     @AfterMapping
     public void mapFilms(ActorDto dto, @MappingTarget ActorModel model) {
@@ -53,13 +53,5 @@ public abstract class ActorMapper {
 
         model.setPlaceOfBirth(country);
     }
-
-//    default Long fromFilm(FilmModel model) {
-//        return model == null ? null : model.getId();
-//    }
-//
-//    default FilmModel fromLongToFilm(Long filmId) {
-//        return filmId == null ? null : repository.getById(filmId);
-//    }
 
 }

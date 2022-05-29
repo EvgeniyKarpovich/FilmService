@@ -11,8 +11,8 @@
             music_id integer NOT NULL,
             film_id integer NOT NULL,
             PRIMARY KEY (music_id, film_id),
-            CONSTRAINT fk_music FOREIGN KEY (music_id) references MUSICS (id),
-            CONSTRAINT fk_film FOREIGN KEY (film_id) references FILMS (id)
+            CONSTRAINT fk_music FOREIGN KEY (music_id) references MUSICS (id) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT fk_film FOREIGN KEY (film_id) references FILMS (id) ON UPDATE CASCADE
             );
         </sql>
     </changeSet>

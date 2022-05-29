@@ -9,12 +9,13 @@ import by.karpovich.filmSevice.service.DirectorService;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR,
         uses = {ActorMapper.class, MusicMapper.class,
-                DirectorMapper.class, CountryMapper.class})
+                DirectorMapper.class, CountryMapper.class}, imports = Instant.class)
 public abstract class FilmMapper {
 
     @Autowired
@@ -33,17 +34,17 @@ public abstract class FilmMapper {
     @Mapping(target = "musics", ignore = true)
     @Mapping(source = "directorId", target = "director.id")
     @Mapping(source = "countryId", target = "country.id")
-    public abstract FilmModel mapFromDto(FilmDto countryDto);
+    public abstract FilmModel mapFromDto(FilmDto dto);
 
     @Mapping(source = "director.id", target = "directorId")
     @Mapping(source = "country.id", target = "countryId")
     @Mapping(target = "actors", ignore = true)
     @Mapping(target = "musics", ignore = true)
-    public abstract FilmDto mapFromEntity(FilmModel country);
+    public abstract FilmDto mapFromEntity(FilmModel model);
 
-    public abstract List<FilmModel> mapFromListDto(List<FilmDto> countryDtoList);
+    public abstract List<FilmModel> mapFromListDto(List<FilmDto> dtoList);
 
-    public abstract List<FilmDto> mapFromListEntity(List<FilmModel> countries);
+    public abstract List<FilmDto> mapFromListEntity(List<FilmModel> modelList);
 
     @AfterMapping
     protected void setCountry(@MappingTarget FilmModel model, FilmDto dto) {
@@ -80,21 +81,5 @@ public abstract class FilmMapper {
         }
         model.setMusics(musics);
     }
-
-//    default Long fromMusic(MusicModel model) {
-//        return model == null ? null : model.getId();
-//    }
-//
-//    default MusicModel fromLongToMusic(Long musicId) {
-//        return musicId == null ? null : musicRepository.getById(musicId);
-//    }
-//
-//    default Long fromActor(ActorModel model) {
-//        return model == null ? null : model.getId();
-//    }
-//
-//    default ActorModel fromLongToActor(Long actorId) {
-//        return actorId == null ? null : actorRepository.getById(actorId);
-//    }
 
 }

@@ -11,8 +11,8 @@
             user_id integer NOT NULL,
             role_id integer NOT NULL,
             PRIMARY KEY (user_id, role_id),
-            CONSTRAINT fk_user FOREIGN KEY (user_id) references USERS (id),
-            CONSTRAINT fk_role FOREIGN KEY (role_id) references ROLES (id)
+            CONSTRAINT fk_user FOREIGN KEY (user_id) references USERS (id) ON UPDATE CASCADE ON DELETE CASCADE,
+            CONSTRAINT fk_role FOREIGN KEY (role_id) references ROLES (id) ON UPDATE CASCADE
             );
         </sql>
     </changeSet>

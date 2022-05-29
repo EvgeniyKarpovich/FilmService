@@ -52,14 +52,14 @@ public class FilmModel {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ACTORS_FILMS",
-            joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "actor_id", referencedColumnName = "id")})
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id", referencedColumnName = "id"))
     private List<ActorModel> actors = new ArrayList<>();
 
     @ManyToMany/*(fetch = FetchType.EAGER)*/
     @JoinTable(name = "MUSICS_FILMS",
-            joinColumns = {@JoinColumn(name = "film_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "id")})
+            joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "music_id", referencedColumnName = "id"))
     private List<MusicModel> musics = new ArrayList<>();
 
     @Column(name = "description")

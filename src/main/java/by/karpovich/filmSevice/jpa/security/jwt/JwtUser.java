@@ -22,8 +22,9 @@ public class JwtUser implements UserDetails {
             String login,
             String name,
             String lastname,
+            String password,
             String email,
-            String password, Collection<? extends GrantedAuthority> authorities,
+            Collection<? extends GrantedAuthority> authorities,
             boolean enabled
 
     ) {
@@ -31,8 +32,8 @@ public class JwtUser implements UserDetails {
         this.login = login;
         this.name = name;
         this.lastname = lastname;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.authorities = authorities;
         this.enabled = enabled;
     }
