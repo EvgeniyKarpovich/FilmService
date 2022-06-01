@@ -65,7 +65,7 @@ public abstract class FilmMapper {
         List<Long> actorId = dto.getActors();
         List<ActorModel> films = new ArrayList<>();
         for (Long id : actorId) {
-            ActorModel actor = actorRepository.getById(id);
+            ActorModel actor = actorRepository.getOne(id);
             films.add(actor);
         }
         model.setActors(films);
@@ -76,7 +76,7 @@ public abstract class FilmMapper {
         List<Long> musicId = dto.getMusics();
         List<MusicModel> musics = new ArrayList<>();
         for (Long id : musicId) {
-            MusicModel music = musicRepository.getById(id);
+            MusicModel music = musicRepository.getOne(id);
             musics.add(music);
         }
         model.setMusics(musics);

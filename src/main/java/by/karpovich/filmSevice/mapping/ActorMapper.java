@@ -41,7 +41,7 @@ public abstract class ActorMapper {
         List<Long> filmsId = dto.getFilms();
         List<FilmModel> films = new ArrayList<>();
         for (Long id : filmsId) {
-            FilmModel hall = repository.getById(id);
+            FilmModel hall = repository.getOne(id);
             films.add(hall);
         }
         model.setFilms(films);

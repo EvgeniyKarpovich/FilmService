@@ -40,7 +40,7 @@ public abstract class DirectorMapper {
         List<Long> filmsId = dto.getFilms();
         List<FilmModel> films = new ArrayList<>();
         for (Long id : filmsId) {
-            FilmModel filmModel = repository.getById(id);
+            FilmModel filmModel = repository.getOne(id);
             films.add(filmModel);
         }
         model.setFilms(films);
