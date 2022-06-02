@@ -1,11 +1,13 @@
 package by.karpovich.filmSevice.api.controller;
 
-import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.api.dto.ActorDto;
+import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,33 +22,56 @@ public class ActorController {
 
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
-    public ActorDto findById(@PathVariable("id") Long id) {
-        return actorService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        ActorDto byId = actorService.findById(id);
+
+        if (byId == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(byId, HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "Save actor")
     @PostMapping
-    public void save(@RequestBody ActorDto actorDto) {
-        actorService.save(actorDto);
+    public ResponseEntity<?> save(@RequestBody ActorDto actorDto) {
+        ActorDto save = actorService.save(actorDto);
+
+        if (save == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Actor saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update by Id actor")
     @PutMapping("/{id}")
-    public void update(@RequestBody ActorDto actorDto,
-                       @PathVariable("id") Long id) {
-        actorService.update(actorDto, id);
+    public ResponseEntity<?> update(@RequestBody ActorDto actorDto,
+                                    @PathVariable("id") Long id) {
+        ActorDto update = actorService.update(actorDto, id);
+
+        if (update == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Actor saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find all actors by criteria")
     @GetMapping
-    public List<ActorDto> findByCriteria(ActorSearchCriteriaDto actorSearchCriteriaDto) {
-        return actorService.findByCriteria(actorSearchCriteriaDto);
+    public ResponseEntity<?> findByCriteria(ActorSearchCriteriaDto actorSearchCriteriaDto) {
+        List<ActorDto> byCriteria = actorService.findByCriteria(actorSearchCriteriaDto);
+
+        if (byCriteria.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(byCriteria, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete by Id actor")
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
         actorService.deleteById(id);
+
+        return new ResponseEntity<>("Film deleted successfully", HttpStatus.OK);
     }
 
 }

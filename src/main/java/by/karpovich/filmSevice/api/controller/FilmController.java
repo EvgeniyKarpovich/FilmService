@@ -1,12 +1,14 @@
 package by.karpovich.filmSevice.api.controller;
 
-import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
 import by.karpovich.filmSevice.api.dto.FilmDto;
+import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
 import by.karpovich.filmSevice.service.FilmService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,33 +24,55 @@ public class FilmController {
 
     @ApiOperation(value = "Find film by id")
     @GetMapping("/{id}")
-    public FilmDto findById(@PathVariable("id") Long id) {
-        return filmService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        FilmDto byId = filmService.findById(id);
+
+        if (byId == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find all films by criteria")
     @GetMapping
-    public List<FilmDto> findByCriteria(FilmSearchCriteriaDto filmSearchCriteriaDto) {
-        return filmService.findAllByCriteria(filmSearchCriteriaDto);
+    public ResponseEntity<?> findByCriteria(FilmSearchCriteriaDto filmSearchCriteriaDto) {
+        List<FilmDto> allByCriteria = filmService.findAllByCriteria(filmSearchCriteriaDto);
+
+        if (allByCriteria.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(allByCriteria, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Save film")
     @PostMapping
-    public FilmDto save(@RequestBody FilmDto filmDto) {
-        return filmService.save(filmDto);
+    public ResponseEntity<?> save(@RequestBody FilmDto filmDto) {
+        FilmDto save = filmService.save(filmDto);
+
+        if (save == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Film saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update Film by id")
     @PutMapping("/{id}")
-    public FilmDto update(@RequestBody FilmDto filmDto,
-                          @PathVariable("id") Long id) {
-        return filmService.update(filmDto, id);
+    public ResponseEntity<?> update(@RequestBody FilmDto filmDto,
+                                    @PathVariable("id") Long id) {
+        FilmDto update = filmService.update(filmDto, id);
+
+        if (update == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Film saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete By id Film")
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
         filmService.deleteById(id);
+
+        return new ResponseEntity<>("Film deleted successfully", HttpStatus.OK);
     }
 
 }

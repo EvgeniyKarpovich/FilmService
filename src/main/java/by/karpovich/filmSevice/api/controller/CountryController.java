@@ -5,6 +5,8 @@ import by.karpovich.filmSevice.service.CountryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,39 +22,56 @@ public class CountryController {
 
     @ApiOperation(value = "Find country by id")
     @GetMapping("/{id}")
-    public CountryDto findById(@PathVariable("id") Long id) {
-        return countryService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        CountryDto byId = countryService.findById(id);
+
+        if (byId == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find All country")
     @GetMapping
-    public List<CountryDto> findAll() {
-        return countryService.findAll();
+    public ResponseEntity<?> findAll() {
+        List<CountryDto> all = countryService.findAll();
+
+        if (all.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(all, HttpStatus.OK);
+
     }
 
     @ApiOperation(value = "Save country")
     @PostMapping
-    public void save(@RequestBody @Valid CountryDto countryDto) {
-        countryService.save(countryDto);
+    public ResponseEntity<?> save(@RequestBody @Valid CountryDto countryDto) {
+        CountryDto save = countryService.save(countryDto);
+
+        if (save == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Country saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update by id country")
     @PutMapping("/{id}")
-    public void update(@RequestBody CountryDto countryDto,
-                       @PathVariable("id") Long id) {
-        countryService.update(id, countryDto);
+    public ResponseEntity<?> update(@RequestBody CountryDto countryDto,
+                                    @PathVariable("id") Long id) {
+        CountryDto update = countryService.update(id, countryDto);
+
+        if (update == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Country saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete by Id country")
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
         countryService.deleteById(id);
-    }
 
-    @ApiOperation(value = "Find country by Name")
-    @GetMapping("/searchByName/{name}")
-    public CountryDto findByName(@PathVariable("name") String name) {
-        return countryService.findByName(name);
+        return new ResponseEntity<>("Country deleted successfully", HttpStatus.OK);
     }
 
 }
