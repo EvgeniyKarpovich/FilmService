@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,12 +37,6 @@ public class CountryService {
                 () -> new NotFoundModelException(String.format("Country with id = %s not found", id)));
         log.info("IN findById -  Country with id = {} found", country.getId());
         return countryMapper.mapFromEntity(country);
-    }
-
-    public List<CountryDto> findAll() {
-        List<CountryModel> countryList = countryRepository.findAll();
-        log.info("IN findAll - the number countries = {}", countryList.size());
-        return countryMapper.mapFromListEntity(countryList);
     }
 
     public CountryDto update(Long id, CountryDto countryDto) {

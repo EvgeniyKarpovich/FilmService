@@ -72,7 +72,6 @@ public class DirectorController {
         directorService.deleteById(id);
 
         return new ResponseEntity<>("Director deleted successfully", HttpStatus.OK);
-
     }
 
 }
