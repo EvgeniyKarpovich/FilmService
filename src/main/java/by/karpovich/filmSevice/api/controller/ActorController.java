@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.api.controller;
 
-import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.ActorDtoFull;
+import by.karpovich.filmSevice.api.dto.ActorForSaveDto;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
@@ -21,42 +21,29 @@ public class ActorController {
     @Autowired
     private ActorService actorService;
 
-    @ApiOperation(value = "Find all actors with this Surname")
-    @GetMapping("/names/{name}")
-    public List<ActorModel> findBySurnameStartsWith(@PathVariable("name") String name) {
-        return actorService.findByName(name);
-    }
-
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        ActorDtoFull actorDtoFullById = actorService.findById(id);
+        ActorDtoFull actorDtoFullById = actorService.findActorById(id);
 
         return new ResponseEntity<>(actorDtoFullById, HttpStatus.OK);
     }
 
-
     @ApiOperation(value = "Save actor")
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ActorDto actorDto) {
-        ActorDto save = actorService.save(actorDto);
+    public ResponseEntity<?> save(@RequestBody ActorForSaveDto actorDto) {
+        actorService.save(actorDto);
 
-        if (save == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>("Actor saved successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update by Id actor")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody ActorDto actorDto,
+    public ResponseEntity<?> update(@RequestBody ActorForSaveDto actorDto,
                                     @PathVariable("id") Long id) {
-        ActorDto update = actorService.update(actorDto, id);
+         actorService.update(actorDto, id);
 
-        if (update == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("Actor saved successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Actor updated successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find all actors by criteria")
@@ -75,7 +62,7 @@ public class ActorController {
     public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
         actorService.deleteById(id);
 
-        return new ResponseEntity<>("Film deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Actor deleted successfully", HttpStatus.OK);
     }
 
 }

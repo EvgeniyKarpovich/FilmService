@@ -1,10 +1,9 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.ActorDtoFull;
+import by.karpovich.filmSevice.api.dto.ActorForSaveDto;
 import by.karpovich.filmSevice.api.dto.CountryDto;
 import by.karpovich.filmSevice.api.dto.FilmDtoName;
-import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
@@ -13,7 +12,6 @@ import by.karpovich.filmSevice.jpa.model.FilmModel;
 import by.karpovich.filmSevice.jpa.repository.ActorRepository;
 import by.karpovich.filmSevice.jpa.repository.CountryRepository;
 import by.karpovich.filmSevice.jpa.repository.FilmRepository;
-import by.karpovich.filmSevice.jpa.specification.ActorSpecificationUtils;
 import by.karpovich.filmSevice.mapping.ActorMapper;
 import by.karpovich.filmSevice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -42,24 +40,13 @@ public class ActorService {
     @Autowired
     private FilmRepository filmRepository;
 
-    public List<ActorModel> findByName(String name) {
-        List<ActorModel> actorList = actorRepository.findByNameStartingWith(name);
-        log.info("IN findByName -  the number of actors with this surname found : {}", actorList.size());
-        return actorList;
-    }
-
-    public ActorDtoFull findById(Long id) {
-
-        Optional<ActorModel> model = actorRepository.findById(id);
-        ActorModel actor = model.orElseThrow(
-                () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));
-        log.info("IN findById -  Actor with id = {} found", actor.getId());
+    public ActorDtoFull findActorById(Long id) {
+        ActorModel actor = findActorModelById(id);
 
         ActorDtoFull dto = new ActorDtoFull();
 
-        Optional<CountryModel> byId = countryRepository.findById(actor.getPlaceOfBirth().getId());
-        CountryModel countryModel = byId.orElseThrow(
-                () -> new NotFoundModelException(String.format("Country with id = %s not found", id)));
+        CountryModel countryModel = findCountryModelById(actor.getPlaceOfBirth().getId());
+
         CountryDto countryDto = new CountryDto();
         countryDto.setId(countryModel.getId());
         countryDto.setName(countryModel.getName());
@@ -73,9 +60,7 @@ public class ActorService {
         if (filmIdByUser.size() > 0) {
             for (Long filmId : filmIdByUser) {
                 FilmDtoName filmDto = new FilmDtoName();
-                Optional<FilmModel> filmById = filmRepository.findById(filmId);
-                FilmModel filmModel = filmById.orElseThrow(
-                        () -> new NotFoundModelException(String.format("Film with id = %s not found", filmId)));
+                FilmModel filmModel = findFilmModelById(filmId);
                 filmDto.setId(filmModel.getId());
                 filmDto.setName(filmModel.getName());
 
@@ -95,21 +80,42 @@ public class ActorService {
         return dto;
     }
 
-    public ActorDto save(ActorDto actorDto) {
-        validateAlreadyExists(null, actorDto);
-        ActorModel actor = actorMapper.mapFromDto(actorDto);
-        ActorModel actorSaved = actorRepository.save(actor);
-        log.info("IN save -  Actor with name  '{}' saved", actorDto.getName());
-        return actorMapper.mapFromEntity(actorSaved);
+    public void save(ActorForSaveDto actorForSaveDto) {
+        validateAlreadyExists(null, actorForSaveDto);
+
+        ActorModel actorModel = new ActorModel();
+
+        CountryModel countryModelById = findCountryModelById(actorForSaveDto.getCountryId());
+
+        actorModel.setName(actorForSaveDto.getName());
+        actorModel.setLastname(actorForSaveDto.getLastname());
+        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
+        actorModel.setPlaceOfBirth(countryModelById);
+        actorModel.setHeight(actorForSaveDto.getHeight());
+        actorModel.setAwards(actorForSaveDto.getAwards());
+
+        actorRepository.save(actorModel);
+        log.info("IN save -  Actor with name  '{}' saved", actorModel.getName());
     }
 
-    public ActorDto update(ActorDto actorDto, Long id) {
-        validateAlreadyExists(id, actorDto);
-        ActorModel actor = actorMapper.mapFromDto(actorDto);
-        actor.setId(id);
-        ActorModel actorUpdated = actorRepository.save(actor);
-        log.info("IN update -  Film  '{}' , updated", actorDto.getName());
-        return actorMapper.mapFromEntity(actorUpdated);
+    public void update(ActorForSaveDto actorForSaveDto, Long id) {
+        validateAlreadyExists(id, actorForSaveDto);
+
+        ActorModel actorModel = new ActorModel();
+
+        CountryModel countryModelById = findCountryModelById(actorForSaveDto.getCountryId());
+
+        actorModel.setId(id);
+        actorModel.setName(actorForSaveDto.getName());
+        actorModel.setLastname(actorForSaveDto.getLastname());
+        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
+        actorModel.setPlaceOfBirth(countryModelById);
+        actorModel.setHeight(actorForSaveDto.getHeight());
+        actorModel.setAwards(actorForSaveDto.getAwards());
+
+        actorRepository.save(actorModel);
+        log.info("IN update -  Actor  '{}' , updated", actorModel.getName());
+
     }
 
     public void deleteById(Long id) {
@@ -133,21 +139,17 @@ public class ActorService {
         List<ActorModel> actorModelList = new ArrayList<>();
 
         for (Long id : actorId) {
-            Optional<ActorModel> model = actorRepository.findById(id);
-            ActorModel actor = model.orElseThrow(
-                    () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));
-            log.info("IN findById -  Actor with id = {} found", actor.getId());
+            ActorModel actor = findActorModelById(id);
+
             actorModelList.add(actor);
         }
 
-        ActorDtoFull dto ;
+        ActorDtoFull dto;
         String dateOfBirthInString = "";
 
         for (ActorModel actorModel : actorModelList) {
             dto = new ActorDtoFull();
-            Optional<CountryModel> byId = countryRepository.findById(actorModel.getPlaceOfBirth().getId());
-            CountryModel countryModel = byId.orElseThrow(
-                    () -> new NotFoundModelException(String.format("Country with id = %s not found", actorModel.getId())));
+            CountryModel countryModel = findCountryModelById(actorModel.getPlaceOfBirth().getId());
             CountryDto countryDto = new CountryDto();
             countryDto.setId(countryModel.getId());
             countryDto.setName(countryModel.getName());
@@ -161,9 +163,7 @@ public class ActorService {
             if (filmIdByUser.size() > 0) {
                 for (Long filmId : filmIdByUser) {
                     FilmDtoName filmDto = new FilmDtoName();
-                    Optional<FilmModel> filmById = filmRepository.findById(filmId);
-                    FilmModel filmModel = filmById.orElseThrow(
-                            () -> new NotFoundModelException(String.format("Film with id = %s not found", filmId)));
+                    FilmModel filmModel = findFilmModelById(filmId);
                     filmDto.setId(filmModel.getId());
                     filmDto.setName(filmModel.getName());
 
@@ -181,19 +181,41 @@ public class ActorService {
             dto.setFilms(filmModelList);
 
             actorDtoFullList.add(dto);
-
         }
-
         log.info("IN findAll - the number of actors = {}", actorDtoFullList.size());
 
         return actorDtoFullList;
     }
 
-    private void validateAlreadyExists(Long id, ActorDto dto) {
+    private void validateAlreadyExists(Long id, ActorForSaveDto dto) {
         Optional<ActorModel> check = actorRepository.findByNameAndLastname(dto.getName(), dto.getLastname());
         if (check.isPresent() && !Objects.equals(check.get().getId(), id)) {
             throw new DuplicateException(String.format("Actor with id = %s already exist", id));
         }
+    }
+
+    public ActorModel findActorModelById(Long id) {
+        Optional<ActorModel> model = actorRepository.findById(id);
+        ActorModel actorModel = model.orElseThrow(
+                () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));
+        log.info("IN findById -  Actor with id = {} found", actorModel.getId());
+        return actorModel;
+    }
+
+    public CountryModel findCountryModelById(Long id) {
+        Optional<CountryModel> byId = countryRepository.findById(id);
+        CountryModel countryModel = byId.orElseThrow(
+                () -> new NotFoundModelException(String.format("Country with id = %s not found", id)));
+
+        return countryModel;
+    }
+
+    public FilmModel findFilmModelById(Long id) {
+        Optional<FilmModel> filmById = filmRepository.findById(id);
+        FilmModel filmModel = filmById.orElseThrow(
+                () -> new NotFoundModelException(String.format("Film with id = %s not found", id)));
+
+        return filmModel;
     }
 
 }
