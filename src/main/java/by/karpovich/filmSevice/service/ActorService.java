@@ -1,6 +1,9 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.*;
+import by.karpovich.filmSevice.api.dto.ActorDto;
+import by.karpovich.filmSevice.api.dto.ActorDtoFull;
+import by.karpovich.filmSevice.api.dto.CountryDto;
+import by.karpovich.filmSevice.api.dto.FilmDtoName;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
@@ -20,8 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -66,19 +67,20 @@ public class ActorService {
         Instant dateOfBirth = actor.getDateOfBirth();
         String dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
 
-
         List<FilmDtoName> filmModelList = new ArrayList<>();
-        List<Long> longs = actorRepository.getFilmId(actor.getId());
+        List<Long> filmIdByUser = actorRepository.getFilmId(actor.getId());
 
-        for (Long filmId : longs) {
-            FilmDtoName filmDto = new FilmDtoName();
-            Optional<FilmModel> filmById = filmRepository.findById(filmId);
-            FilmModel filmModel = filmById.orElseThrow(
-                    () -> new NotFoundModelException(String.format("Film with id = %s not found", filmId)));
-            filmDto.setId(filmModel.getId());
-            filmDto.setName(filmModel.getName());
+        if (filmIdByUser.size() > 0) {
+            for (Long filmId : filmIdByUser) {
+                FilmDtoName filmDto = new FilmDtoName();
+                Optional<FilmModel> filmById = filmRepository.findById(filmId);
+                FilmModel filmModel = filmById.orElseThrow(
+                        () -> new NotFoundModelException(String.format("Film with id = %s not found", filmId)));
+                filmDto.setId(filmModel.getId());
+                filmDto.setName(filmModel.getName());
 
-            filmModelList.add(filmDto);
+                filmModelList.add(filmDto);
+            }
         }
 
         dto.setId(actor.getId());
@@ -87,12 +89,10 @@ public class ActorService {
         dto.setHeight(actor.getHeight());
         dto.setAwards(actor.getAwards());
         dto.setDateOfBirth(dateOfBirthInString);
-
         dto.setCountry(countryDto);
         dto.setFilms(filmModelList);
 
         return dto;
-
     }
 
     public ActorDto save(ActorDto actorDto) {
@@ -121,10 +121,72 @@ public class ActorService {
         log.info("IN deleteById - Actor with id = {} deleted", id);
     }
 
-    public List<ActorDto> findByCriteria(ActorSearchCriteriaDto actorSearchCriteriaDto) {
-        List<ActorModel> actorList = actorRepository.findAll(ActorSpecificationUtils.createFromCriteria(actorSearchCriteriaDto));
-        log.info("IN findAll - the number of actors according to these criteria = {}", actorList.size());
-        return actorMapper.mapFromListEntity(actorList);
+    public List<ActorDtoFull> findAll() {
+        List<ActorModel> actorList = actorRepository.findAll();
+        List<Long> actorId = new ArrayList<>();
+        List<ActorDtoFull> actorDtoFullList = new ArrayList<>();
+
+        for (ActorModel actorModel : actorList) {
+            actorId.add(actorModel.getId());
+        }
+
+        List<ActorModel> actorModelList = new ArrayList<>();
+
+        for (Long id : actorId) {
+            Optional<ActorModel> model = actorRepository.findById(id);
+            ActorModel actor = model.orElseThrow(
+                    () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));
+            log.info("IN findById -  Actor with id = {} found", actor.getId());
+            actorModelList.add(actor);
+        }
+
+        ActorDtoFull dto ;
+        String dateOfBirthInString = "";
+
+        for (ActorModel actorModel : actorModelList) {
+            dto = new ActorDtoFull();
+            Optional<CountryModel> byId = countryRepository.findById(actorModel.getPlaceOfBirth().getId());
+            CountryModel countryModel = byId.orElseThrow(
+                    () -> new NotFoundModelException(String.format("Country with id = %s not found", actorModel.getId())));
+            CountryDto countryDto = new CountryDto();
+            countryDto.setId(countryModel.getId());
+            countryDto.setName(countryModel.getName());
+
+            Instant dateOfBirth = actorModel.getDateOfBirth();
+            dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
+
+            List<FilmDtoName> filmModelList = new ArrayList<>();
+            List<Long> filmIdByUser = actorRepository.getFilmId(actorModel.getId());
+
+            if (filmIdByUser.size() > 0) {
+                for (Long filmId : filmIdByUser) {
+                    FilmDtoName filmDto = new FilmDtoName();
+                    Optional<FilmModel> filmById = filmRepository.findById(filmId);
+                    FilmModel filmModel = filmById.orElseThrow(
+                            () -> new NotFoundModelException(String.format("Film with id = %s not found", filmId)));
+                    filmDto.setId(filmModel.getId());
+                    filmDto.setName(filmModel.getName());
+
+                    filmModelList.add(filmDto);
+                }
+            }
+
+            dto.setId(actorModel.getId());
+            dto.setName(actorModel.getName());
+            dto.setLastname(actorModel.getLastname());
+            dto.setHeight(actorModel.getHeight());
+            dto.setAwards(actorModel.getAwards());
+            dto.setDateOfBirth(dateOfBirthInString);
+            dto.setCountry(countryDto);
+            dto.setFilms(filmModelList);
+
+            actorDtoFullList.add(dto);
+
+        }
+
+        log.info("IN findAll - the number of actors = {}", actorDtoFullList.size());
+
+        return actorDtoFullList;
     }
 
     private void validateAlreadyExists(Long id, ActorDto dto) {

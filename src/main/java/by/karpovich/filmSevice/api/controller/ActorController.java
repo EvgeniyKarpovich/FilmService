@@ -2,7 +2,6 @@ package by.karpovich.filmSevice.api.controller;
 
 import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.ActorDtoFull;
-import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
@@ -28,12 +27,11 @@ public class ActorController {
         return actorService.findByName(name);
     }
 
-
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
         ActorDtoFull actorDtoFullById = actorService.findById(id);
-        
+
         return new ResponseEntity<>(actorDtoFullById, HttpStatus.OK);
     }
 
@@ -63,13 +61,13 @@ public class ActorController {
 
     @ApiOperation(value = "Find all actors by criteria")
     @GetMapping
-    public ResponseEntity<?> findByCriteria(ActorSearchCriteriaDto actorSearchCriteriaDto) {
-        List<ActorDto> byCriteria = actorService.findByCriteria(actorSearchCriteriaDto);
+    public ResponseEntity<?> findAll() {
+        List<ActorDtoFull> all = actorService.findAll();
 
-        if (byCriteria.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (all.isEmpty()) {
+            return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(byCriteria, HttpStatus.OK);
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete by Id actor")
