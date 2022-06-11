@@ -1,19 +1,17 @@
 package by.karpovich.filmSevice.jpa.repository;
 
 import by.karpovich.filmSevice.jpa.model.FilmModel;
-import by.karpovich.filmSevice.jpa.model.GenreForFilm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface FilmRepository extends JpaRepository<FilmModel, Long>, JpaSpecificationExecutor<FilmModel> {
 
-//    List<FilmModel> findByNameStartsWithIgnoreCase(String name);
+    //    List<FilmModel> findByNameStartsWithIgnoreCase(String name);
 //
 //    List<FilmModel> findByCountryNameStartsWithIgnoreCase(String country);
 //

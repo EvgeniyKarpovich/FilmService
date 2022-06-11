@@ -17,7 +17,7 @@ public class CountryDto {
 
     @ApiModelProperty(value = "id", example = "1", position = 1)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "Name", example = "", required = true, position = 2)
     @NotBlank(message = "Enter Name")

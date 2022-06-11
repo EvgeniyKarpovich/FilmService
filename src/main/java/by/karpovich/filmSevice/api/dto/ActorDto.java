@@ -54,6 +54,4 @@ public class ActorDto {
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
     private List<Long> films = new ArrayList<>();
-
-    //    private byte[] image;
 }

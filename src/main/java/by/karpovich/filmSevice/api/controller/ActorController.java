@@ -1,7 +1,9 @@
 package by.karpovich.filmSevice.api.controller;
 
 import by.karpovich.filmSevice.api.dto.ActorDto;
+import by.karpovich.filmSevice.api.dto.ActorDtoFull;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.ActorSearchCriteriaDto;
+import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,15 +22,19 @@ public class ActorController {
     @Autowired
     private ActorService actorService;
 
+    @ApiOperation(value = "Find all actors with this Surname")
+    @GetMapping("/names/{name}")
+    public List<ActorModel> findBySurnameStartsWith(@PathVariable("name") String name) {
+        return actorService.findByName(name);
+    }
+
+
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        ActorDto byId = actorService.findById(id);
-
-        if (byId == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(byId, HttpStatus.OK);
+        ActorDtoFull actorDtoFullById = actorService.findById(id);
+        
+        return new ResponseEntity<>(actorDtoFullById, HttpStatus.OK);
     }
 
 
