@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -39,13 +36,17 @@ public class ActorService {
     private CountryRepository countryRepository;
     @Autowired
     private FilmRepository filmRepository;
+    @Autowired
+    private CountryService countryService;
+    @Autowired
+    private FilmService filmService;
 
     public ActorDtoFull findActorById(Long id) {
         ActorModel actor = findActorModelById(id);
 
         ActorDtoFull dto = new ActorDtoFull();
 
-        CountryModel countryModel = findCountryModelById(actor.getPlaceOfBirth().getId());
+        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actor.getPlaceOfBirth().getId());
 
         CountryDto countryDto = new CountryDto();
         countryDto.setId(countryModel.getId());
@@ -60,7 +61,7 @@ public class ActorService {
         if (filmIdByUser.size() > 0) {
             for (Long filmId : filmIdByUser) {
                 FilmDtoName filmDto = new FilmDtoName();
-                FilmModel filmModel = findFilmModelById(filmId);
+                FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
                 filmDto.setId(filmModel.getId());
                 filmDto.setName(filmModel.getName());
 
@@ -85,14 +86,22 @@ public class ActorService {
 
         ActorModel actorModel = new ActorModel();
 
-        CountryModel countryModelById = findCountryModelById(actorForSaveDto.getCountryId());
+        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorForSaveDto.getCountryId());
 
         actorModel.setName(actorForSaveDto.getName());
         actorModel.setLastname(actorForSaveDto.getLastname());
         actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
-        actorModel.setPlaceOfBirth(countryModelById);
+        actorModel.setPlaceOfBirth(countryModel);
         actorModel.setHeight(actorForSaveDto.getHeight());
         actorModel.setAwards(actorForSaveDto.getAwards());
+
+        Set<Long> filmsId = actorForSaveDto.getFilmsId();
+        List<FilmModel> films = new ArrayList<>();
+        for (Long filmId : filmsId) {
+            FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
+            films.add(filmModel);
+        }
+        actorModel.setFilms(films);
 
         actorRepository.save(actorModel);
         log.info("IN save -  Actor with name  '{}' saved", actorModel.getName());
@@ -103,15 +112,23 @@ public class ActorService {
 
         ActorModel actorModel = new ActorModel();
 
-        CountryModel countryModelById = findCountryModelById(actorForSaveDto.getCountryId());
+        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorForSaveDto.getCountryId());
 
         actorModel.setId(id);
         actorModel.setName(actorForSaveDto.getName());
         actorModel.setLastname(actorForSaveDto.getLastname());
         actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
-        actorModel.setPlaceOfBirth(countryModelById);
+        actorModel.setPlaceOfBirth(countryModel);
         actorModel.setHeight(actorForSaveDto.getHeight());
         actorModel.setAwards(actorForSaveDto.getAwards());
+
+        Set<Long> filmsId = actorForSaveDto.getFilmsId();
+        List<FilmModel> films = new ArrayList<>();
+        for (Long filmId : filmsId) {
+            FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
+            films.add(filmModel);
+        }
+        actorModel.setFilms(films);
 
         actorRepository.save(actorModel);
         log.info("IN update -  Actor  '{}' , updated", actorModel.getName());
@@ -122,7 +139,7 @@ public class ActorService {
         if (actorRepository.findById(id).isPresent()) {
             actorRepository.deleteById(id);
         } else {
-            throw new EntityNotFoundException(String.format("Director with id = %s not found", id));
+            throw new EntityNotFoundException(String.format("Actor with id = %s not found", id));
         }
         log.info("IN deleteById - Actor with id = {} deleted", id);
     }
@@ -149,7 +166,7 @@ public class ActorService {
 
         for (ActorModel actorModel : actorModelList) {
             dto = new ActorDtoFull();
-            CountryModel countryModel = findCountryModelById(actorModel.getPlaceOfBirth().getId());
+            CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorModel.getPlaceOfBirth().getId());
             CountryDto countryDto = new CountryDto();
             countryDto.setId(countryModel.getId());
             countryDto.setName(countryModel.getName());
@@ -163,7 +180,7 @@ public class ActorService {
             if (filmIdByUser.size() > 0) {
                 for (Long filmId : filmIdByUser) {
                     FilmDtoName filmDto = new FilmDtoName();
-                    FilmModel filmModel = findFilmModelById(filmId);
+                    FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
                     filmDto.setId(filmModel.getId());
                     filmDto.setName(filmModel.getName());
 
@@ -200,22 +217,6 @@ public class ActorService {
                 () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));
         log.info("IN findById -  Actor with id = {} found", actorModel.getId());
         return actorModel;
-    }
-
-    public CountryModel findCountryModelById(Long id) {
-        Optional<CountryModel> byId = countryRepository.findById(id);
-        CountryModel countryModel = byId.orElseThrow(
-                () -> new NotFoundModelException(String.format("Country with id = %s not found", id)));
-
-        return countryModel;
-    }
-
-    public FilmModel findFilmModelById(Long id) {
-        Optional<FilmModel> filmById = filmRepository.findById(id);
-        FilmModel filmModel = filmById.orElseThrow(
-                () -> new NotFoundModelException(String.format("Film with id = %s not found", id)));
-
-        return filmModel;
     }
 
 }

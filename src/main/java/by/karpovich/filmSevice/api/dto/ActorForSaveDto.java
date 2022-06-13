@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,24 +23,29 @@ import java.util.List;
 @NoArgsConstructor
 public class ActorForSaveDto {
 
-    @ApiModelProperty(value = "Name", example = "", required = true, position = 1)
+    @ApiModelProperty(value = "id", example = "1", position = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long  id;
+    @ApiModelProperty(value = "Name", example = "", required = true, position = 2)
     @NotBlank(message = "Enter Name")
     private String name;
-    @ApiModelProperty(value = "LastName", example = "", required = true, position = 2)
+    @ApiModelProperty(value = "LastName", example = "", required = true, position = 3)
     @NotBlank(message = "Enter Surname")
     private String lastname;
-    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 3)
+    @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 4)
     @NotNull(message = "Enter Date")
     private Instant dateOfBirth;
-    @ApiModelProperty(value = "country Id", example = "1", required = true, position = 4)
+    @ApiModelProperty(value = "country Id", example = "1", required = true, position = 5)
     @NotNull(message = "Enter Country")
     @ValidCountry
     private Long countryId;
-    @ApiModelProperty(value = "Height", example = "187", position = 5)
+    @ApiModelProperty(value = "Height", example = "187", position = 6)
     @NotNull(message = "Enter height")
     @Min(value = 1, message = "height must be positive")
     private Integer height;
-    @ApiModelProperty(value = "Awards", example = "", position = 6)
+    @ApiModelProperty(value = "Awards", example = "", position = 7)
     private List<RewardForActor> awards = new ArrayList<>();
+    @ApiModelProperty(value = "FilmsId", example = "", position = 8)
+    private Set<Long> filmsId;
 
 }

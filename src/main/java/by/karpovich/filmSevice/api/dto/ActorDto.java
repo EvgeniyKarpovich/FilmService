@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.api.dto;
 
 import by.karpovich.filmSevice.api.validation.ValidCountry;
-import by.karpovich.filmSevice.jpa.model.FilmModel;
+import by.karpovich.filmSevice.api.validation.ValidFilm;
 import by.karpovich.filmSevice.jpa.model.RewardForActor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -53,5 +53,5 @@ public class ActorDto {
     private List<RewardForActor> awards = new ArrayList<>();
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
-    private List<Long> films = new ArrayList<>();
+    private List<@ValidFilm Long> films = new ArrayList<>();
 }

@@ -74,4 +74,12 @@ public class FilmService {
         }
     }
 
+    public FilmModel findByIdWhichWillReturnModel(Long id) {
+        Optional<FilmModel> filmById = filmRepository.findById(id);
+        FilmModel filmModel = filmById.orElseThrow(
+                () -> new NotFoundModelException(String.format("Film with id = %s not found", id)));
+
+        return filmModel;
+    }
+
 }

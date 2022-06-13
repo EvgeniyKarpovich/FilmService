@@ -63,7 +63,7 @@ public class FilmDto {
     @ApiModelProperty(value = "Name", example = "", position = 8)
     private String description;
 
-    @ApiModelProperty(value = "Age", example = "1", position = 9)
+    @ApiModelProperty(value = "Age", example = "", position = 9)
     private int ageLimit;
 
     @ApiModelProperty(value = "Actors", example = "", position = 10)
