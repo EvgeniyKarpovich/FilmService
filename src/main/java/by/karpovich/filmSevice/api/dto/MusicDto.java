@@ -39,5 +39,4 @@ public class MusicDto {
     @Min(value = 1, message = "the time must be correct")
     private double durationInMinutes;
 
-
 }

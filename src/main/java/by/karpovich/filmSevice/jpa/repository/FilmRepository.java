@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface FilmRepository extends JpaRepository<FilmModel, Long>, JpaSpecificationExecutor<FilmModel> {
 
     @Query(nativeQuery = true, value = "SELECT actor_id FROM ACTORS_FILMS where film_id = :film")
-    List<Long> getActorsId(@Param("film") Long id);
+    List<Long> getActorsIdByFilmId(@Param("film") Long id);
 
     @Query(nativeQuery = true, value = "SELECT music_id FROM MUSICS_FILMS where film_id = :film")
-    List<Long> getMusicsId(@Param("film") Long id);
+    List<Long> getMusicsIdByFilmId(@Param("film") Long id);
 
     //    List<FilmModel> findByNameStartsWithIgnoreCase(String name);
 //

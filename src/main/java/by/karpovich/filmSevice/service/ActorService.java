@@ -1,9 +1,6 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.ActorDtoFull;
-import by.karpovich.filmSevice.api.dto.ActorForSaveDto;
-import by.karpovich.filmSevice.api.dto.CountryDto;
-import by.karpovich.filmSevice.api.dto.FilmDtoName;
+import by.karpovich.filmSevice.api.dto.*;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
@@ -56,7 +53,7 @@ public class ActorService {
         String dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
 
         List<FilmDtoName> filmModelList = new ArrayList<>();
-        List<Long> filmIdByUser = actorRepository.getFilmId(actor.getId());
+        List<Long> filmIdByUser = actorRepository.getFilmsIdByActorId(actor.getId());
 
         if (filmIdByUser.size() > 0) {
             for (Long filmId : filmIdByUser) {
@@ -81,48 +78,48 @@ public class ActorService {
         return dto;
     }
 
-    public void save(ActorForSaveDto actorForSaveDto) {
-        validateAlreadyExists(null, actorForSaveDto);
+    public void save(ActorDto dto) {
+        validateAlreadyExists(null, dto);
 
         ActorModel actorModel = new ActorModel();
 
-        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorForSaveDto.getCountryId());
+        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(dto.getCountryId());
 
-        Set<Long> filmsId = actorForSaveDto.getFilmsId();
+        Set<Long> filmsId = dto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long filmId : filmsId) {
             FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
             films.add(filmModel);
         }
 
-        actorModel.setName(actorForSaveDto.getName());
-        actorModel.setLastname(actorForSaveDto.getLastname());
-        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
+        actorModel.setName(dto.getName());
+        actorModel.setLastname(dto.getLastname());
+        actorModel.setDateOfBirth(dto.getDateOfBirth());
         actorModel.setPlaceOfBirth(countryModel);
-        actorModel.setHeight(actorForSaveDto.getHeight());
-        actorModel.setAwards(actorForSaveDto.getAwards());
+        actorModel.setHeight(dto.getHeight());
+        actorModel.setAwards(dto.getAwards());
         actorModel.setFilms(films);
 
         actorRepository.save(actorModel);
         log.info("IN save -  Actor with name  '{}' saved", actorModel.getName());
     }
 
-    public void update(ActorForSaveDto actorForSaveDto, Long id) {
-        validateAlreadyExists(id, actorForSaveDto);
+    public void update(ActorDto dto, Long id) {
+        validateAlreadyExists(id, dto);
 
         ActorModel actorModel = new ActorModel();
 
-        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorForSaveDto.getCountryId());
+        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(dto.getCountryId());
 
         actorModel.setId(id);
-        actorModel.setName(actorForSaveDto.getName());
-        actorModel.setLastname(actorForSaveDto.getLastname());
-        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
+        actorModel.setName(dto.getName());
+        actorModel.setLastname(dto.getLastname());
+        actorModel.setDateOfBirth(dto.getDateOfBirth());
         actorModel.setPlaceOfBirth(countryModel);
-        actorModel.setHeight(actorForSaveDto.getHeight());
-        actorModel.setAwards(actorForSaveDto.getAwards());
+        actorModel.setHeight(dto.getHeight());
+        actorModel.setAwards(dto.getAwards());
 
-        Set<Long> filmsId = actorForSaveDto.getFilmsId();
+        Set<Long> filmsId = dto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long filmId : filmsId) {
             FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
@@ -175,7 +172,7 @@ public class ActorService {
             dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
 
             List<FilmDtoName> filmModelList = new ArrayList<>();
-            List<Long> filmIdByUser = actorRepository.getFilmId(actorModel.getId());
+            List<Long> filmIdByUser = actorRepository.getFilmsIdByActorId(actorModel.getId());
 
             if (filmIdByUser.size() > 0) {
                 for (Long filmId : filmIdByUser) {
@@ -204,7 +201,7 @@ public class ActorService {
         return actorDtoFullList;
     }
 
-    private void validateAlreadyExists(Long id, ActorForSaveDto dto) {
+    private void validateAlreadyExists(Long id, ActorDto dto) {
         Optional<ActorModel> check = actorRepository.findByNameAndLastname(dto.getName(), dto.getLastname());
         if (check.isPresent() && !Objects.equals(check.get().getId(), id)) {
             throw new DuplicateException(String.format("Actor with id = %s already exist", id));

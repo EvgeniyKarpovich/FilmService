@@ -1,14 +1,13 @@
 package by.karpovich.filmSevice.service;
 
+import by.karpovich.filmSevice.api.dto.FilmDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.*;
+import by.karpovich.filmSevice.jpa.repository.FilmRepository;
 import by.karpovich.filmSevice.jpa.specification.FilmSpecificationUtils;
 import by.karpovich.filmSevice.mapping.FilmMapper;
-import by.karpovich.filmSevice.api.dto.FilmDto;
-import by.karpovich.filmSevice.jpa.repository.FilmRepository;
-import by.karpovich.filmSevice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,14 +34,14 @@ public class FilmService {
     @Autowired
     private ActorService actorService;
     @Autowired
-    private MusicService  musicService;
+    private MusicService musicService;
 
     public FilmDto findById(Long id) {
 
         FilmModel filmModel = findByIdWhichWillReturnModel(id);
 
-        List<Long> actorsId = filmRepository.getActorsId(id);
-        List<Long> musicsId = filmRepository.getMusicsId(id);
+        List<Long> actorsId = filmRepository.getActorsIdByFilmId(id);
+        List<Long> musicsId = filmRepository.getMusicsIdByFilmId(id);
 
         FilmDto filmDto = new FilmDto();
         filmDto.setId(filmModel.getId());
@@ -96,7 +95,7 @@ public class FilmService {
         filmModel.setActors(actors);
         filmModel.setMusics(musicModels);
 
-         filmRepository.save(filmModel);
+        filmRepository.save(filmModel);
         log.info("IN save -  Film with name '{}' saved", filmDto.getName());
     }
 
@@ -150,16 +149,12 @@ public class FilmService {
         List<FilmModel> all = filmRepository.findAll();
         List<FilmDto> filmDtoList = new ArrayList<>(all.size());
 
-        if (filmDtoList == null) {
-            return null;
-        }
-
         for (FilmModel model : all) {
 
             FilmModel filmModel = findByIdWhichWillReturnModel(model.getId());
 
-            List<Long> actorsId = filmRepository.getActorsId(model.getId());
-            List<Long> musicsId = filmRepository.getMusicsId(model.getId());
+            List<Long> actorsId = filmRepository.getActorsIdByFilmId(model.getId());
+            List<Long> musicsId = filmRepository.getMusicsIdByFilmId(model.getId());
 
             FilmDto filmDto = new FilmDto();
             filmDto.setId(filmModel.getId());

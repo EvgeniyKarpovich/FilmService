@@ -1,7 +1,7 @@
 package by.karpovich.filmSevice.api.controller;
 
+import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.ActorDtoFull;
-import by.karpovich.filmSevice.api.dto.ActorForSaveDto;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,7 @@ public class ActorController {
 
     @ApiOperation(value = "Save actor")
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ActorForSaveDto actorDto) {
+    public ResponseEntity<?> save(@RequestBody ActorDto actorDto) {
         actorService.save(actorDto);
 
         return new ResponseEntity<>("Actor saved successfully", HttpStatus.OK);
@@ -38,9 +38,9 @@ public class ActorController {
 
     @ApiOperation(value = "Update by Id actor")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody ActorForSaveDto actorDto,
+    public ResponseEntity<?> update(@RequestBody ActorDto actorDto,
                                     @PathVariable("id") Long id) {
-         actorService.update(actorDto, id);
+        actorService.update(actorDto, id);
 
         return new ResponseEntity<>("Actor updated successfully", HttpStatus.OK);
     }

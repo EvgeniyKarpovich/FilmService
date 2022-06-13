@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +16,7 @@ public interface ActorRepository extends JpaRepository<ActorModel, Long>, JpaSpe
     List<ActorModel> findByNameStartingWith(String name);
 
     @Query(nativeQuery = true, value = "SELECT film_id FROM ACTORS_FILMS where actor_id = :actor")
-    List<Long> getFilmId(@Param("actor") Long id);
+    List<Long> getFilmsIdByActorId(@Param("actor") Long id);
 
 //    Optional<ActorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
 //

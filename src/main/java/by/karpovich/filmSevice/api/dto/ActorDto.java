@@ -15,7 +15,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -52,5 +54,5 @@ public class ActorDto {
     private List<RewardForActor> awards = new ArrayList<>();
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
-    private List<@ValidFilm Long> films = new ArrayList<>();
+    private Set<@ValidFilm Long> filmsId = new HashSet<>();
 }
