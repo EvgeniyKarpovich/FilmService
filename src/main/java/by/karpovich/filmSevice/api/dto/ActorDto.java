@@ -36,7 +36,6 @@ public class ActorDto {
     private String lastname;
 
     @ApiModelProperty(value = "Date_of_birth", example = "2022-01-22T18:34:51.464+00:00", position = 4)
-    @NotNull(message = "Enter Date")
     private Instant dateOfBirth;
 
     @ApiModelProperty(value = "country Id", example = "1", required = true, position = 5)

@@ -38,8 +38,8 @@ public abstract class FilmMapper {
 
     @Mapping(source = "director.id", target = "directorId")
     @Mapping(source = "country.id", target = "countryId")
-    @Mapping(target = "actors", ignore = true)
-    @Mapping(target = "musics", ignore = true)
+    @Mapping(target = "actorsId", ignore = true)
+    @Mapping(target = "musicsId", ignore = true)
     public abstract FilmDto mapFromEntity(FilmModel model);
 
     public abstract List<FilmModel> mapFromListDto(List<FilmDto> dtoList);
@@ -62,7 +62,7 @@ public abstract class FilmMapper {
 
     @AfterMapping
     protected void mapActor(FilmDto dto, @MappingTarget FilmModel model) {
-        List<Long> actorId = dto.getActors();
+        List<Long> actorId = dto.getActorsId();
         List<ActorModel> films = new ArrayList<>();
         for (Long id : actorId) {
             ActorModel actor = actorRepository.getOne(id);
@@ -73,7 +73,7 @@ public abstract class FilmMapper {
 
     @AfterMapping
     protected void mapMusic(FilmDto dto, @MappingTarget FilmModel model) {
-        List<Long> musicId = dto.getMusics();
+        List<Long> musicId = dto.getMusicsId();
         List<MusicModel> musics = new ArrayList<>();
         for (Long id : musicId) {
             MusicModel music = musicRepository.getOne(id);

@@ -2,7 +2,6 @@ package by.karpovich.filmSevice.api.controller;
 
 import by.karpovich.filmSevice.api.dto.ActorDtoFull;
 import by.karpovich.filmSevice.api.dto.ActorForSaveDto;
-import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.service.ActorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +23,7 @@ public class ActorController {
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        ActorDtoFull actorDtoFullById = actorService.findActorById(id);
+        ActorDtoFull actorDtoFullById = actorService.findById(id);
 
         return new ResponseEntity<>(actorDtoFullById, HttpStatus.OK);
     }

@@ -2,6 +2,7 @@ package by.karpovich.filmSevice.service;
 
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
+import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.jpa.model.MusicModel;
 import by.karpovich.filmSevice.mapping.MusicMapper;
 import by.karpovich.filmSevice.api.dto.MusicDto;
@@ -71,5 +72,13 @@ public class MusicService {
             throw new DuplicateException(String.format("Track with id = %s already exist", id));
         }
     }
+    public MusicModel findByIdWhichWillReturnModel(Long id) {
+        Optional<MusicModel> model = musicRepository.findById(id);
+        MusicModel musicModel = model.orElseThrow(
+                () -> new NotFoundModelException(String.format("Music with id = %s not found", id)));
+        log.info("IN findById -  Music with id = {} found", musicModel.getId());
+        return musicModel;
+    }
+
 
 }

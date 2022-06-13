@@ -41,8 +41,8 @@ public class ActorService {
     @Autowired
     private FilmService filmService;
 
-    public ActorDtoFull findActorById(Long id) {
-        ActorModel actor = findActorModelById(id);
+    public ActorDtoFull findById(Long id) {
+        ActorModel actor = findByIdWhichWillReturnModel(id);
 
         ActorDtoFull dto = new ActorDtoFull();
 
@@ -88,19 +88,19 @@ public class ActorService {
 
         CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorForSaveDto.getCountryId());
 
-        actorModel.setName(actorForSaveDto.getName());
-        actorModel.setLastname(actorForSaveDto.getLastname());
-        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
-        actorModel.setPlaceOfBirth(countryModel);
-        actorModel.setHeight(actorForSaveDto.getHeight());
-        actorModel.setAwards(actorForSaveDto.getAwards());
-
         Set<Long> filmsId = actorForSaveDto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long filmId : filmsId) {
             FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
             films.add(filmModel);
         }
+
+        actorModel.setName(actorForSaveDto.getName());
+        actorModel.setLastname(actorForSaveDto.getLastname());
+        actorModel.setDateOfBirth(actorForSaveDto.getDateOfBirth());
+        actorModel.setPlaceOfBirth(countryModel);
+        actorModel.setHeight(actorForSaveDto.getHeight());
+        actorModel.setAwards(actorForSaveDto.getAwards());
         actorModel.setFilms(films);
 
         actorRepository.save(actorModel);
@@ -156,7 +156,7 @@ public class ActorService {
         List<ActorModel> actorModelList = new ArrayList<>();
 
         for (Long id : actorId) {
-            ActorModel actor = findActorModelById(id);
+            ActorModel actor = findByIdWhichWillReturnModel(id);
 
             actorModelList.add(actor);
         }
@@ -211,7 +211,7 @@ public class ActorService {
         }
     }
 
-    public ActorModel findActorModelById(Long id) {
+    public ActorModel findByIdWhichWillReturnModel(Long id) {
         Optional<ActorModel> model = actorRepository.findById(id);
         ActorModel actorModel = model.orElseThrow(
                 () -> new NotFoundModelException(String.format("Actor with id = %s not found", id)));

@@ -67,10 +67,10 @@ public class FilmDto {
     private int ageLimit;
 
     @ApiModelProperty(value = "Actors", example = "", position = 10)
-    private List<Long> actors = new ArrayList<>();
+    private List<Long> actorsId = new ArrayList<>();
 
     @ApiModelProperty(value = "music", example = "", position = 11)
-    private List<Long> musics = new ArrayList<>();
+    private List<Long> musicsId = new ArrayList<>();
 
     //    private byte[] image;
 }

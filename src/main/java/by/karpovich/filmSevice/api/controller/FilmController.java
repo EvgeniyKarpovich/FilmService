@@ -44,14 +44,19 @@ public class FilmController {
         return new ResponseEntity<>(allByCriteria, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Find all films by criteria")
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAll() {
+        List<FilmDto> dtoList = filmService.findAll();
+
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Save film")
     @PostMapping
     public ResponseEntity<?> save(@RequestBody FilmDto filmDto) {
-        FilmDto save = filmService.save(filmDto);
+         filmService.save(filmDto);
 
-        if (save == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>("Film saved successfully", HttpStatus.OK);
     }
 
@@ -59,12 +64,9 @@ public class FilmController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody FilmDto filmDto,
                                     @PathVariable("id") Long id) {
-        FilmDto update = filmService.update(filmDto, id);
+        filmService.update(filmDto, id);
 
-        if (update == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("Film saved successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Film updated successfully", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete By id Film")

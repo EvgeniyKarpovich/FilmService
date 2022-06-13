@@ -16,8 +16,8 @@ public interface ActorRepository extends JpaRepository<ActorModel, Long>, JpaSpe
 
     List<ActorModel> findByNameStartingWith(String name);
 
-    @Query(nativeQuery = true, value = "SELECT film_id FROM ACTORS_FILMS where actor_id = :film")
-    List<Long> getFilmId(@Param("film") Long id);
+    @Query(nativeQuery = true, value = "SELECT film_id FROM ACTORS_FILMS where actor_id = :actor")
+    List<Long> getFilmId(@Param("actor") Long id);
 
 //    Optional<ActorModel> findByNameStartsWithIgnoreCaseAndSurnameStartsWithIgnoreCase(String name, String surname);
 //
