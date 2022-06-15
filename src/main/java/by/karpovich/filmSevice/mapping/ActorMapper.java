@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, uses = {FilmMapper.class, CountryMapper.class})
 public abstract class ActorMapper {
@@ -29,7 +30,7 @@ public abstract class ActorMapper {
     public abstract ActorModel mapFromDto(ActorDto dto);
 
     @Mapping(source = "placeOfBirth.id", target = "countryId")
-    @Mapping(target = "films", ignore = true)
+    @Mapping(target = "filmsId", ignore = true)
     public abstract ActorDto mapFromEntity(ActorModel model);
 
     public abstract List<ActorModel> mapFromListDto(List<ActorDto> dtoList);
@@ -38,7 +39,7 @@ public abstract class ActorMapper {
 
     @AfterMapping
     public void mapFilms(ActorDto dto, @MappingTarget ActorModel model) {
-        List<Long> filmsId = dto.getFilms();
+        Set<Long> filmsId = dto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long id : filmsId) {
             FilmModel hall = repository.getOne(id);

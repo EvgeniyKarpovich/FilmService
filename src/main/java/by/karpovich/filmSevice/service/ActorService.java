@@ -1,15 +1,15 @@
 package by.karpovich.filmSevice.service;
 
-import by.karpovich.filmSevice.api.dto.*;
+import by.karpovich.filmSevice.api.dto.ActorDto;
+import by.karpovich.filmSevice.api.dto.ActorDtoFull;
+import by.karpovich.filmSevice.api.dto.CountryDto;
+import by.karpovich.filmSevice.api.dto.FilmDtoName;
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
 import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.jpa.model.CountryModel;
 import by.karpovich.filmSevice.jpa.model.FilmModel;
 import by.karpovich.filmSevice.jpa.repository.ActorRepository;
-import by.karpovich.filmSevice.jpa.repository.CountryRepository;
-import by.karpovich.filmSevice.jpa.repository.FilmRepository;
-import by.karpovich.filmSevice.mapping.ActorMapper;
 import by.karpovich.filmSevice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +27,6 @@ public class ActorService {
 
     @Autowired
     private ActorRepository actorRepository;
-    @Autowired
-    private ActorMapper actorMapper;
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private FilmRepository filmRepository;
     @Autowired
     private CountryService countryService;
     @Autowired

@@ -35,6 +35,8 @@ public class FilmService {
     private ActorService actorService;
     @Autowired
     private MusicService musicService;
+    @Autowired
+    private MailSender mailSender;
 
     public FilmDto findById(Long id) {
 
@@ -96,6 +98,12 @@ public class FilmService {
         filmModel.setMusics(musicModels);
 
         filmRepository.save(filmModel);
+
+        String message = String.format(
+                "Hello Boss! \n"  +
+                        "We have added a new movie %s", filmDto.getName());
+        mailSender.send("Phoenix-zzz@mail.ru", "Adding a movie", message);
+
         log.info("IN save -  Film with name '{}' saved", filmDto.getName());
     }
 
