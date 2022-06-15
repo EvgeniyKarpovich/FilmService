@@ -70,24 +70,10 @@ public class MusicController {
     @ApiOperation(value = "Find all tracks")
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "2") int size) {
-        try {
-            Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-            Page<MusicModel> musicModels = musicRepository.findAll(pageable);
-            List<MusicModel> content = musicModels.getContent();
+                                     @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> all = musicService.findAll(page, size);
 
-            List<MusicDto> countryDtoList = musicMapper.mapFromListEntity(content);
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("tutorials", countryDtoList);
-            response.put("currentPage", musicModels.getNumber());
-            response.put("totalItems", musicModels.getTotalElements());
-            response.put("totalPages", musicModels.getTotalPages());
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete by id track")

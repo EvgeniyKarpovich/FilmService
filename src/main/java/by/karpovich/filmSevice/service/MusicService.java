@@ -2,19 +2,20 @@ package by.karpovich.filmSevice.service;
 
 import by.karpovich.filmSevice.exception.DuplicateException;
 import by.karpovich.filmSevice.exception.NotFoundModelException;
-import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.jpa.model.MusicModel;
 import by.karpovich.filmSevice.mapping.MusicMapper;
 import by.karpovich.filmSevice.api.dto.MusicDto;
 import by.karpovich.filmSevice.jpa.repository.MusicRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -34,10 +35,23 @@ public class MusicService {
         return musicMapper.mapFromEntity(music);
     }
 
-    public List<MusicDto> findAll() {
-        List<MusicModel> musicsList = musicRepository.findAll();
-        log.info("IN findAll - the number tracks = {}", musicsList.size());
-        return musicMapper.mapFromListEntity(musicsList);
+    public Map<String, Object> findAll(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+        Page<MusicModel> musicModels = musicRepository.findAll(pageable);
+        List<MusicModel> content = musicModels.getContent();
+        List<MusicDto> musicDtoList = musicMapper.mapFromListEntity(content);
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("tutorials", musicDtoList);
+        response.put("currentPage", musicModels.getNumber());
+        response.put("totalItems", musicModels.getTotalElements());
+        response.put("totalPages", musicModels.getTotalPages());
+
+        log.info("IN findAll - the number tracks = {}", musicDtoList.size());
+
+        return response;
     }
 
     public MusicDto save(MusicDto musicDto) {

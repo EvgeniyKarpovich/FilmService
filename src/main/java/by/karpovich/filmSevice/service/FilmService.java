@@ -10,13 +10,14 @@ import by.karpovich.filmSevice.jpa.specification.FilmSpecificationUtils;
 import by.karpovich.filmSevice.mapping.FilmMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -100,7 +101,7 @@ public class FilmService {
         filmRepository.save(filmModel);
 
         String message = String.format(
-                "Hello Boss! \n"  +
+                "Hello Boss! \n" +
                         "We have added a new movie %s", filmDto.getName());
         mailSender.send("Phoenix-zzz@mail.ru", "Adding a movie", message);
 
@@ -153,9 +154,11 @@ public class FilmService {
         return filmMapper.mapFromListEntity(filmList);
     }
 
-    public List<FilmDto> findAll() {
-        List<FilmModel> all = filmRepository.findAll();
-        List<FilmDto> filmDtoList = new ArrayList<>(all.size());
+    public Map<String, Object> findAll(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+        Page<FilmModel> all = filmRepository.findAll(pageable);
+        List<FilmDto> filmDtoList = new ArrayList<>();
 
         for (FilmModel model : all) {
 
@@ -181,7 +184,13 @@ public class FilmService {
             filmDtoList.add(filmDto);
         }
 
-        return filmDtoList;
+        Map<String, Object> response = new HashMap<>();
+        response.put("tutorials", filmDtoList);
+        response.put("currentPage", all.getNumber());
+        response.put("totalItems", all.getTotalElements());
+        response.put("totalPages", all.getTotalPages());
+
+        return response;
     }
 
     public void deleteById(Long id) {

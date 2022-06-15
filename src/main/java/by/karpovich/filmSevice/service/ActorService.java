@@ -13,6 +13,10 @@ import by.karpovich.filmSevice.jpa.repository.ActorRepository;
 import by.karpovich.filmSevice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -135,8 +139,10 @@ public class ActorService {
         log.info("IN deleteById - Actor with id = {} deleted", id);
     }
 
-    public List<ActorDtoFull> findAll() {
-        List<ActorModel> actorList = actorRepository.findAll();
+    public Map<String, Object> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+        Page<ActorModel> actorList = actorRepository.findAll(pageable);
+
         List<Long> actorId = new ArrayList<>();
         List<ActorDtoFull> actorDtoFullList = new ArrayList<>();
 
@@ -190,9 +196,16 @@ public class ActorService {
 
             actorDtoFullList.add(dto);
         }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("tutorials", actorDtoFullList);
+        response.put("currentPage", actorList.getNumber());
+        response.put("totalItems", actorList.getTotalElements());
+        response.put("totalPages", actorList.getTotalPages());
+
         log.info("IN findAll - the number of actors = {}", actorDtoFullList.size());
 
-        return actorDtoFullList;
+        return response;
     }
 
     private void validateAlreadyExists(Long id, ActorDto dto) {

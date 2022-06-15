@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/actors")
@@ -47,12 +47,10 @@ public class ActorController {
 
     @ApiOperation(value = "Find all actors by criteria")
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        List<ActorDtoFull> all = actorService.findAll();
+    public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size) {
+        Map<String, Object> all = actorService.findAll(page, size);
 
-        if (all.isEmpty()) {
-            return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 

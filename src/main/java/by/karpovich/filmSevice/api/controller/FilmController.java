@@ -1,17 +1,25 @@
 package by.karpovich.filmSevice.api.controller;
 
 import by.karpovich.filmSevice.api.dto.FilmDto;
+import by.karpovich.filmSevice.api.dto.MusicDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
+import by.karpovich.filmSevice.jpa.model.MusicModel;
 import by.karpovich.filmSevice.service.FilmService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -46,10 +54,12 @@ public class FilmController {
 
     @ApiOperation(value = "Find all films by criteria")
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
-        List<FilmDto> dtoList = filmService.findAll();
+    public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size) {
 
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+        Map<String, Object> pageFilmDto = filmService.findAll(page, size);
+
+        return new ResponseEntity<>(pageFilmDto, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Save film")
