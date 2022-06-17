@@ -54,5 +54,5 @@ public class ActorDto {
     private List<RewardForActor> awards = new ArrayList<>();
 
     @ApiModelProperty(value = "Films", example = "", position = 8)
-    private Set<@ValidFilm Long> filmsId = new HashSet<>();
+    private List<@ValidFilm Long> filmsId = new ArrayList<>();
 }

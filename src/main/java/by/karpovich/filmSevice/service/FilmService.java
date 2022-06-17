@@ -1,5 +1,6 @@
 package by.karpovich.filmSevice.service;
 
+import by.karpovich.filmSevice.api.dto.ActorDto;
 import by.karpovich.filmSevice.api.dto.FilmDto;
 import by.karpovich.filmSevice.api.dto.searchCriteriaDto.FilmSearchCriteriaDto;
 import by.karpovich.filmSevice.exception.DuplicateException;
@@ -155,7 +156,6 @@ public class FilmService {
     }
 
     public Map<String, Object> findAll(int page, int size) {
-
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
         Page<FilmModel> all = filmRepository.findAll(pageable);
         List<FilmDto> filmDtoList = new ArrayList<>();

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,9 +24,9 @@ public class ActorController {
     @ApiOperation(value = "Find actor by Id")
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        ActorDtoFull actorDtoFullById = actorService.findById(id);
+        ActorDto actorDtoById = actorService.findById(id);
 
-        return new ResponseEntity<>(actorDtoFullById, HttpStatus.OK);
+        return new ResponseEntity<>(actorDtoById, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Save actor")

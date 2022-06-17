@@ -10,6 +10,7 @@ import by.karpovich.filmSevice.jpa.model.ActorModel;
 import by.karpovich.filmSevice.jpa.model.CountryModel;
 import by.karpovich.filmSevice.jpa.model.FilmModel;
 import by.karpovich.filmSevice.jpa.repository.ActorRepository;
+import by.karpovich.filmSevice.jpa.repository.FilmRepository;
 import by.karpovich.filmSevice.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,43 +36,23 @@ public class ActorService {
     private CountryService countryService;
     @Autowired
     private FilmService filmService;
+    @Autowired
+    private FilmRepository filmRepository;
 
-    public ActorDtoFull findById(Long id) {
-        ActorModel actor = findByIdWhichWillReturnModel(id);
+    public ActorDto findById(Long id) {
+        ActorModel model = findByIdWhichWillReturnModel(id);
 
-        ActorDtoFull dto = new ActorDtoFull();
+        ActorDto dto = new ActorDto();
+        dto.setId(model.getId());
+        dto.setName(model.getName());
+        dto.setLastname(model.getLastname());
+        dto.setDateOfBirth(model.getDateOfBirth());
+        dto.setCountryId(model.getPlaceOfBirth().getId());
+        dto.setHeight(model.getHeight());
+        dto.setAwards(model.getAwards());
 
-        CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actor.getPlaceOfBirth().getId());
-
-        CountryDto countryDto = new CountryDto();
-        countryDto.setId(countryModel.getId());
-        countryDto.setName(countryModel.getName());
-
-        Instant dateOfBirth = actor.getDateOfBirth();
-        String dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
-
-        List<FilmDtoName> filmModelList = new ArrayList<>();
-        List<Long> filmIdByUser = actorRepository.getFilmsIdByActorId(actor.getId());
-
-        if (filmIdByUser.size() > 0) {
-            for (Long filmId : filmIdByUser) {
-                FilmDtoName filmDto = new FilmDtoName();
-                FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
-                filmDto.setId(filmModel.getId());
-                filmDto.setName(filmModel.getName());
-
-                filmModelList.add(filmDto);
-            }
-        }
-
-        dto.setId(actor.getId());
-        dto.setName(actor.getName());
-        dto.setLastname(actor.getLastname());
-        dto.setHeight(actor.getHeight());
-        dto.setAwards(actor.getAwards());
-        dto.setDateOfBirth(dateOfBirthInString);
-        dto.setCountry(countryDto);
-        dto.setFilms(filmModelList);
+        List<Long> filmIdByActor = actorRepository.getFilmsIdByActorId(model.getId());
+        dto.setFilmsId(filmIdByActor);
 
         return dto;
     }
@@ -83,7 +64,7 @@ public class ActorService {
 
         CountryModel countryModel = countryService.findByIdWhichWillReturnModel(dto.getCountryId());
 
-        Set<Long> filmsId = dto.getFilmsId();
+        List<Long> filmsId = dto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long filmId : filmsId) {
             FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
@@ -109,6 +90,13 @@ public class ActorService {
 
         CountryModel countryModel = countryService.findByIdWhichWillReturnModel(dto.getCountryId());
 
+        List<Long> filmsId = dto.getFilmsId();
+        List<FilmModel> films = new ArrayList<>();
+        for (Long filmId : filmsId) {
+            FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
+            films.add(filmModel);
+        }
+
         actorModel.setId(id);
         actorModel.setName(dto.getName());
         actorModel.setLastname(dto.getLastname());
@@ -116,13 +104,6 @@ public class ActorService {
         actorModel.setPlaceOfBirth(countryModel);
         actorModel.setHeight(dto.getHeight());
         actorModel.setAwards(dto.getAwards());
-
-        Set<Long> filmsId = dto.getFilmsId();
-        List<FilmModel> films = new ArrayList<>();
-        for (Long filmId : filmsId) {
-            FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
-            films.add(filmModel);
-        }
         actorModel.setFilms(films);
 
         actorRepository.save(actorModel);
@@ -141,70 +122,32 @@ public class ActorService {
 
     public Map<String, Object> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
-        Page<ActorModel> actorList = actorRepository.findAll(pageable);
+        Page<ActorModel> modelList = actorRepository.findAll(pageable);
 
-        List<Long> actorId = new ArrayList<>();
-        List<ActorDtoFull> actorDtoFullList = new ArrayList<>();
+        List<ActorDto> result = new ArrayList<>();
+        for (ActorModel model : modelList) {
+            ActorDto dto = new ActorDto();
+            dto.setId(model.getId());
+            dto.setName(model.getName());
+            dto.setLastname(model.getLastname());
+            dto.setDateOfBirth(model.getDateOfBirth());
+            dto.setCountryId(model.getPlaceOfBirth().getId());
+            dto.setHeight(model.getHeight());
+            dto.setAwards(model.getAwards());
 
-        for (ActorModel actorModel : actorList) {
-            actorId.add(actorModel.getId());
-        }
+            List<Long> filmIdByActor = actorRepository.getFilmsIdByActorId(model.getId());
+            dto.setFilmsId(filmIdByActor);
 
-        List<ActorModel> actorModelList = new ArrayList<>();
-
-        for (Long id : actorId) {
-            ActorModel actor = findByIdWhichWillReturnModel(id);
-
-            actorModelList.add(actor);
-        }
-
-        ActorDtoFull dto;
-        String dateOfBirthInString = "";
-
-        for (ActorModel actorModel : actorModelList) {
-            dto = new ActorDtoFull();
-            CountryModel countryModel = countryService.findByIdWhichWillReturnModel(actorModel.getPlaceOfBirth().getId());
-            CountryDto countryDto = new CountryDto();
-            countryDto.setId(countryModel.getId());
-            countryDto.setName(countryModel.getName());
-
-            Instant dateOfBirth = actorModel.getDateOfBirth();
-            dateOfBirthInString = DateUtil.mapFromInstantToString(dateOfBirth);
-
-            List<FilmDtoName> filmModelList = new ArrayList<>();
-            List<Long> filmIdByUser = actorRepository.getFilmsIdByActorId(actorModel.getId());
-
-            if (filmIdByUser.size() > 0) {
-                for (Long filmId : filmIdByUser) {
-                    FilmDtoName filmDto = new FilmDtoName();
-                    FilmModel filmModel = filmService.findByIdWhichWillReturnModel(filmId);
-                    filmDto.setId(filmModel.getId());
-                    filmDto.setName(filmModel.getName());
-
-                    filmModelList.add(filmDto);
-                }
-            }
-
-            dto.setId(actorModel.getId());
-            dto.setName(actorModel.getName());
-            dto.setLastname(actorModel.getLastname());
-            dto.setHeight(actorModel.getHeight());
-            dto.setAwards(actorModel.getAwards());
-            dto.setDateOfBirth(dateOfBirthInString);
-            dto.setCountry(countryDto);
-            dto.setFilms(filmModelList);
-
-            actorDtoFullList.add(dto);
+            result.add(dto);
         }
 
         Map<String, Object> response = new HashMap<>();
-        response.put("tutorials", actorDtoFullList);
-        response.put("currentPage", actorList.getNumber());
-        response.put("totalItems", actorList.getTotalElements());
-        response.put("totalPages", actorList.getTotalPages());
+        response.put("tutorials", result);
+        response.put("currentPage", modelList.getNumber());
+        response.put("totalItems", modelList.getTotalElements());
+        response.put("totalPages", modelList.getTotalPages());
 
-        log.info("IN findAll - the number of actors = {}", actorDtoFullList.size());
-
+        log.info("IN findAll - the number of actors = {}", result.size());
         return response;
     }
 

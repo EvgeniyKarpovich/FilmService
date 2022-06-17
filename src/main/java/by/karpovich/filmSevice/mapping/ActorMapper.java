@@ -39,7 +39,7 @@ public abstract class ActorMapper {
 
     @AfterMapping
     public void mapFilms(ActorDto dto, @MappingTarget ActorModel model) {
-        Set<Long> filmsId = dto.getFilmsId();
+        List<Long> filmsId = dto.getFilmsId();
         List<FilmModel> films = new ArrayList<>();
         for (Long id : filmsId) {
             FilmModel hall = repository.getOne(id);

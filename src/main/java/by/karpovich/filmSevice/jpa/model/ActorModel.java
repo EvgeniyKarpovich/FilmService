@@ -43,8 +43,6 @@ public class ActorModel {
     @Column(name = "height")
     private Integer height;
 
-//    private byte[] image;
-
     @Column(name = "awards")
     @Convert(converter = RewardForActorConverter.class)
     private List<RewardForActor> awards = new ArrayList<>();
